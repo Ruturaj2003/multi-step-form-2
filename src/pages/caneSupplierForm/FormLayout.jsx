@@ -1,6 +1,7 @@
 import { Home, User } from 'lucide-react';
 import Navbar from '../../components/caneSupplier/Navbar';
 import General from './General';
+import Address from './Address';
 
 const FormLayout = () => {
   return (
@@ -16,7 +17,8 @@ const FormLayout = () => {
           </div>
         </div>
         {/* Form */}
-        <General></General>
+        {/* <General></General> */}
+        <Address></Address>
       </div>
     </div>
   );

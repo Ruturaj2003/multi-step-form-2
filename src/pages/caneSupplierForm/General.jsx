@@ -52,8 +52,12 @@ const General = () => {
       </div>
 
       {/* Save Button Section */}
-      <div className="flex justify-end items-center p-4">
-        <button className="h-[36px] px-5 text-white bg-teal-700 border-2 border-teal-700 rounded-md hover:bg-teal-600 transition">
+      <div className="flex justify-end items-center  p-4">
+        <button
+          className="h-[36px] px-5 text-white bg-teal-700 border-2 border-teal-700 rounded-md hover:bg-teal-600  
+        cursor-pointer
+        transition"
+        >
           Save
         </button>
       </div>
