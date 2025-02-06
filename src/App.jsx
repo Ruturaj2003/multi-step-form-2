@@ -1,7 +1,9 @@
+import FormLayout from './pages/caneSupplierForm/FormLayout';
+
 function App() {
   return (
     <>
-      <h1 className=" text-4xl text-blue-500">asd</h1>
+      <FormLayout></FormLayout>
     </>
   );
 }
