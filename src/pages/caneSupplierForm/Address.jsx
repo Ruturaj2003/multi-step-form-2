@@ -12,7 +12,7 @@ const Address = () => {
   const [selectedTaluk, setSelectedTaluk] = useState('');
 
   return (
-    <div className="h-[530px] flex flex-col justify-between bg-white p-6 rounded-md shadow-md">
+    <div className="h-[530px] flex flex-col justify-between bg-white p-6 ">
       {/* Form Section */}
       <div className="w-full flex-1">
         <h2 className="text-lg font-semibold text-gray-700 mb-4">
