@@ -1,4 +1,4 @@
-import { Home, User } from 'lucide-react';
+import { Home, List, User } from 'lucide-react';
 
 const Navbar = () => {
   return (
@@ -26,7 +26,7 @@ const Navbar = () => {
         data-value="billing"
         className="flex-1 h-full flex items-center justify-center gap-2 cursor-pointer rounded-lg px-3 py-2 sm:py-0 transition hover:bg-gray-100"
       >
-        <User size={16} />
+        <List size={16} />
         <span className="text-sm sm:text-base">Billing</span>
       </div>
     </div>
