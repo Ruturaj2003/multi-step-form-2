@@ -19,8 +19,8 @@ const Address = () => {
           Address Details
         </h2>
 
-        {/* Form Grid Layout */}
-        <div className="grid grid-cols-3 gap-4">
+        {/* Responsive Grid Layout */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {/* Address Line 1 */}
           <div className="flex flex-col">
             <label className="text-sm text-gray-600 mb-1">Address Line 1</label>
