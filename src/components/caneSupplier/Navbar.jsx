@@ -1,5 +1,5 @@
 import { Home, List, User } from 'lucide-react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
   const location = useLocation();
@@ -16,8 +16,10 @@ const Navbar = () => {
     <div className="w-full sm:w-2/3 h-12 sm:h-14 flex flex-wrap sm:flex-nowrap items-center justify-center bg-teal-100 rounded-lg p-1 gap-2 sm:gap-0">
       {/* Personal Tab */}
       <div data-value="general" className={getLinkClass('/cane-supplier')}>
-        <User size={16} />
-        <span className="text-sm sm:text-base">Personal</span>
+        <Link to={'/cane-supplier'}>
+          <User size={16} />
+          <span className="text-sm sm:text-base">Personal</span>
+        </Link>
       </div>
 
       {/* Address Tab */}
@@ -25,8 +27,10 @@ const Navbar = () => {
         data-value="address"
         className={getLinkClass('/cane-supplier/address')}
       >
-        <Home size={16} />
-        <span className="text-sm sm:text-base">Address</span>
+        <Link to={'/cane-supplier/address'}>
+          <Home size={16} />
+          <span className="text-sm sm:text-base">Address</span>
+        </Link>
       </div>
 
       {/* Billing Tab */}
@@ -34,8 +38,11 @@ const Navbar = () => {
         data-value="billing"
         className={getLinkClass('/cane-supplier/billing')}
       >
-        <List size={16} />
-        <span className="text-sm sm:text-base">Billing</span>
+        {' '}
+        <Link to={'/cane-supplier/billing'}>
+          <List size={16} />
+          <span className="text-sm sm:text-base">Billing</span>
+        </Link>
       </div>
     </div>
   );
