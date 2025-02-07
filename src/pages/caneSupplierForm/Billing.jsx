@@ -1,8 +1,45 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Billing = () => {
+  const navigate = useNavigate();
+  // State management for form fields
+  const [formData, setFormData] = useState({
+    aadhaar: '',
+    pan: '',
+    primaryBank: '',
+    primaryAccount: '',
+    primaryIfsc: '',
+    secondaryBank: '',
+    secondaryAccount: '',
+    secondaryIfsc: '',
+  });
+
+  // Handle input changes
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // Handle form submission
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      //  HTTP request
+
+      // Navigate after successful submission (change the route as needed)
+      navigate('/cane-supplier');
+    } catch (error) {
+      console.error('Error submitting address:', error);
+      // Optionally, handle error state here
+    }
+  };
+
   return (
-    <div className="h-[530px] flex flex-col justify-between bg-white p-6">
+    <form
+      className="h-[530px] flex flex-col justify-between bg-white p-6"
+      onSubmit={handleSubmit}
+    >
       {/* Form Section */}
       <div className="w-full flex-1">
         <h2 className="text-lg font-semibold text-gray-700 mb-4">
@@ -16,6 +53,9 @@ const Billing = () => {
             <label className="text-sm text-gray-600 mb-1">Aadhaar Number</label>
             <input
               type="text"
+              name="aadhaar"
+              value={formData.aadhaar}
+              onChange={handleChange}
               placeholder="Enter Aadhaar Number"
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
             />
@@ -26,6 +66,9 @@ const Billing = () => {
             <label className="text-sm text-gray-600 mb-1">PAN Number</label>
             <input
               type="text"
+              name="pan"
+              value={formData.pan}
+              onChange={handleChange}
               placeholder="Enter PAN Number"
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
             />
@@ -34,73 +77,87 @@ const Billing = () => {
           {/* Empty div for spacing on large screens */}
           <div className="hidden md:block"></div>
 
-          {/* Bank 1 Name */}
+          {/* Primary Bank Details */}
           <div className="flex flex-col">
             <label className="text-sm text-gray-600 mb-1">
               Primary Bank Name
             </label>
             <input
               type="text"
-              placeholder="Enter Bank 1 Name"
+              name="primaryBank"
+              value={formData.primaryBank}
+              onChange={handleChange}
+              placeholder="Enter Bank Name"
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
             />
           </div>
 
-          {/* A/C Number Bank 1 */}
           <div className="flex flex-col">
             <label className="text-sm text-gray-600 mb-1">
               A/C Number (Primary Bank)
             </label>
             <input
               type="text"
+              name="primaryAccount"
+              value={formData.primaryAccount}
+              onChange={handleChange}
               placeholder="Enter Account Number"
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
             />
           </div>
 
-          {/* IFSC Code Bank 1 */}
           <div className="flex flex-col">
             <label className="text-sm text-gray-600 mb-1">
               IFSC Code (Primary Bank)
             </label>
             <input
               type="text"
+              name="primaryIfsc"
+              value={formData.primaryIfsc}
+              onChange={handleChange}
               placeholder="Enter IFSC Code"
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
             />
           </div>
 
-          {/* Bank 2 Name */}
+          {/* Secondary Bank Details */}
           <div className="flex flex-col">
             <label className="text-sm text-gray-600 mb-1">
               Secondary Bank Name
             </label>
             <input
               type="text"
-              placeholder="Enter Bank 2 Name"
+              name="secondaryBank"
+              value={formData.secondaryBank}
+              onChange={handleChange}
+              placeholder="Enter Bank Name"
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
             />
           </div>
 
-          {/* A/C Number Bank 2 */}
           <div className="flex flex-col">
             <label className="text-sm text-gray-600 mb-1">
               A/C Number (Secondary Bank)
             </label>
             <input
               type="text"
+              name="secondaryAccount"
+              value={formData.secondaryAccount}
+              onChange={handleChange}
               placeholder="Enter Account Number"
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
             />
           </div>
 
-          {/* IFSC Code Bank 2 */}
           <div className="flex flex-col">
             <label className="text-sm text-gray-600 mb-1">
               IFSC Code (Secondary Bank)
             </label>
             <input
               type="text"
+              name="secondaryIfsc"
+              value={formData.secondaryIfsc}
+              onChange={handleChange}
               placeholder="Enter IFSC Code"
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
             />
@@ -110,11 +167,14 @@ const Billing = () => {
 
       {/* Save Button Section */}
       <div className="flex justify-end items-center p-4">
-        <button className="h-[36px] px-5 text-white bg-teal-700 border-2 border-teal-700 rounded-md hover:bg-teal-600 transition">
+        <button
+          type="submit"
+          className="h-[36px] px-5 text-white bg-teal-700 border-2 border-teal-700 rounded-md hover:bg-teal-600 transition"
+        >
           Save
         </button>
       </div>
-    </div>
+    </form>
   );
 };
 
