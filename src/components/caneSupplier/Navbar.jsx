@@ -15,35 +15,28 @@ const Navbar = () => {
   return (
     <div className="w-full sm:w-2/3 h-12 sm:h-14 flex flex-wrap sm:flex-nowrap items-center justify-center bg-teal-100 rounded-lg p-1 gap-2 sm:gap-0">
       {/* Personal Tab */}
-      <div data-value="general" className={getLinkClass('/cane-supplier')}>
-        <Link to={'/cane-supplier'}>
-          <User size={16} />
-          <span className="text-sm sm:text-base">Personal</span>
-        </Link>
-      </div>
+      <Link to={'/cane-supplier'} className={getLinkClass('/cane-supplier')}>
+        <User size={16} />
+        <span className="text-sm sm:text-base">Personal</span>
+      </Link>
 
       {/* Address Tab */}
-      <div
-        data-value="address"
+      <Link
+        to={'/cane-supplier/address'}
         className={getLinkClass('/cane-supplier/address')}
       >
-        <Link to={'/cane-supplier/address'}>
-          <Home size={16} />
-          <span className="text-sm sm:text-base">Address</span>
-        </Link>
-      </div>
+        <Home size={16} />
+        <span className="text-sm sm:text-base">Address</span>
+      </Link>
 
       {/* Billing Tab */}
-      <div
-        data-value="billing"
+      <Link
+        to={'/cane-supplier/billing'}
         className={getLinkClass('/cane-supplier/billing')}
       >
-        {' '}
-        <Link to={'/cane-supplier/billing'}>
-          <List size={16} />
-          <span className="text-sm sm:text-base">Billing</span>
-        </Link>
-      </div>
+        <List size={16} />
+        <span className="text-sm sm:text-base">Billing</span>
+      </Link>
     </div>
   );
 };
