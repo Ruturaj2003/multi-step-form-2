@@ -1,8 +1,5 @@
-import { Home, User } from 'lucide-react';
 import Navbar from '../../components/caneSupplier/Navbar';
-import General from './General';
-import Address from './Address';
-import Billing from './Billing';
+import { Outlet } from 'react-router-dom';
 
 const FormLayout = () => {
   return (
@@ -20,7 +17,8 @@ const FormLayout = () => {
         {/* Form */}
         {/* <General></General> */}
         {/* <Address></Address> */}
-        <Billing></Billing>
+        {/* <Billing></Billing> */}
+        <Outlet></Outlet>
       </div>
     </div>
   );

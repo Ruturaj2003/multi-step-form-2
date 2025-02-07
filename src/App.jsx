@@ -16,7 +16,7 @@ function App() {
           element={<CaneSupplierLayout></CaneSupplierLayout>}
         >
           <Route index element={<General></General>}></Route>
-          <Route path="address" element={Address}></Route>
+          <Route path="address" element={<Address></Address>}></Route>
           <Route path="billing" element={<Billing></Billing>}></Route>
         </Route>
       </Routes>
