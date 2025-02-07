@@ -1,5 +1,6 @@
 import Navbar from '../../components/caneSupplier/Navbar';
 import { Outlet } from 'react-router-dom';
+import { IoPersonCircle } from 'react-icons/io5';
 
 const FormLayout = () => {
   return (
@@ -10,8 +11,8 @@ const FormLayout = () => {
           {/* Navigation Container */}
           <Navbar></Navbar>
           {/* Profile Picture */}
-          <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
-            <div className="w-14 h-14 bg-teal-100 rounded-full"></div>
+          <div className="w-16 h-16 bg-white cursor-pointer rounded-full flex items-center justify-center">
+            <IoPersonCircle className="w-14 h-14 text-teal-700 rounded-full"></IoPersonCircle>
           </div>
         </div>
         {/* Form */}
