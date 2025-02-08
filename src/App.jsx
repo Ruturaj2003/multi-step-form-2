@@ -2,6 +2,16 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { default as CaneSupplierLayout } from './pages/caneSupplierForm/FormLayout';
 import Home from './pages/Home';
 import { Address, Billing, General } from './pages/caneSupplierForm';
+import { default as CaneTripLayout } from './pages/caneTripForm/Structure';
+import {
+  BasicDetails,
+  CaneAndPlotInfo,
+  CaneWeight,
+  Deduction,
+  LocationAndVehicle,
+  Output,
+  TripAndRemarks,
+} from './pages/caneTripForm';
 
 function App() {
   return (
@@ -16,6 +26,17 @@ function App() {
           <Route index element={<General></General>}></Route>
           <Route path="address" element={<Address></Address>}></Route>
           <Route path="billing" element={<Billing></Billing>}></Route>
+        </Route>
+
+        {/* Cane Trip Form */}
+        <Route path="/cane-trip" element={<CaneTripLayout />}>
+          <Route index element={<BasicDetails />} />
+          <Route path="caneAndPlotInfo" element={<CaneAndPlotInfo />} />
+          <Route path="locationAndVehicle" element={<LocationAndVehicle />} />
+          <Route path="caneWeight" element={<CaneWeight />} />
+          <Route path="deduction" element={<Deduction />} />
+          <Route path="tripAndRemarks" element={<TripAndRemarks />} />
+          <Route path="output" element={<Output />} />
         </Route>
       </Routes>
     </BrowserRouter>
