@@ -21,13 +21,13 @@ const LocationAndVehicle = () => {
             className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
           />
         </div>
-        {/* Multiple Supplier Checkbox */}
+        {/* Multiple Supplier Checkbox
         <div className="flex items-center gap-2">
           <input type="checkbox" id="multipleSupplier" />
           <label htmlFor="multipleSupplier" className="text-sm">
             Multiple Supplier
           </label>
-        </div>
+        </div> */}
         {/* Harvestor */}
         <div className="flex flex-col">
           <label className="text-sm">Harvestor</label>
