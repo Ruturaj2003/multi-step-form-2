@@ -19,7 +19,7 @@ const Structure = () => {
         <Navbar />
 
         {/* Form Content */}
-        <div className="w-full bg-cyan-400 h-[540px] rounded-lg mt-4 overflow-y-auto p-4">
+        <div className="w-full h-[540px] rounded-lg mt-4 overflow-y-auto p-4">
           <Outlet />
         </div>
       </div>
