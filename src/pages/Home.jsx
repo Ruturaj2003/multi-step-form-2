@@ -10,7 +10,7 @@ const Home = () => {
         Cane Supplier
       </Link>
       <Link
-        to="/form-two"
+        to="/cane-trip"
         className="px-4 py-2 bg-green-500 text-white rounded"
       >
         Go to Form 2
