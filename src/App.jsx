@@ -1,9 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { default as CaneSupplierLayout } from './pages/caneSupplierForm/FormLayout';
 import Home from './pages/Home';
-import General from './pages/caneSupplierForm/General';
-import Address from './pages/caneSupplierForm/Address';
-import Billing from './pages/caneSupplierForm/Billing';
+import { Address, Billing, General } from './pages/caneSupplierForm';
 
 function App() {
   return (
