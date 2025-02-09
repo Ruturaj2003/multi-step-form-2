@@ -54,8 +54,8 @@ const initialState = {
   },
 };
 
-const formSlice = createSlice({
-  name: 'form',
+const caneTripSlice = createSlice({
+  name: 'caneTrip',
   initialState,
   reducers: {
     updateField: (state, action) => {
@@ -66,5 +66,5 @@ const formSlice = createSlice({
   },
 });
 
-export const { updateField, resetForm } = formSlice.actions;
-export default formSlice.reducer;
+export const { updateField, resetForm } = caneTripSlice.actions;
+export default caneTripSlice.reducer;
