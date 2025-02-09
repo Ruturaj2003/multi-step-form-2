@@ -1,4 +1,26 @@
-const Output = () => {
+import React, { useEffect, useState } from 'react';
+
+const Output = ({
+  totalMemberWeight,
+  totalHarvestWeight,
+  totalTransportWeight,
+}) => {
+  // State for calculated weights
+  const [weights, setWeights] = useState({
+    memberWeight: totalMemberWeight || 0,
+    harvestWeight: totalHarvestWeight || 0,
+    transportWeight: totalTransportWeight || 0,
+  });
+
+  // Update state if props change
+  useEffect(() => {
+    setWeights({
+      memberWeight: totalMemberWeight || 0,
+      harvestWeight: totalHarvestWeight || 0,
+      transportWeight: totalTransportWeight || 0,
+    });
+  }, [totalMemberWeight, totalHarvestWeight, totalTransportWeight]);
+
   return (
     <div>
       <h2 className="text-lg font-semibold mb-4">Calculated Weights</h2>
@@ -9,7 +31,7 @@ const Output = () => {
           <input
             type="text"
             readOnly
-            value="Calculated Value"
+            value={weights.memberWeight}
             className="border rounded p-2 bg-gray-100"
           />
         </div>
@@ -19,7 +41,7 @@ const Output = () => {
           <input
             type="text"
             readOnly
-            value="Calculated Value"
+            value={weights.harvestWeight}
             className="border rounded p-2 bg-gray-100"
           />
         </div>
@@ -29,11 +51,12 @@ const Output = () => {
           <input
             type="text"
             readOnly
-            value="Calculated Value"
+            value={weights.transportWeight}
             className="border rounded p-2 bg-gray-100"
           />
         </div>
       </div>
+
       {/* Submit Button */}
       <div className="flex justify-end items-center p-4">
         <button
@@ -46,4 +69,5 @@ const Output = () => {
     </div>
   );
 };
+
 export default Output;
