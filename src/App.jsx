@@ -13,6 +13,7 @@ import {
   TripAndRemarks,
 } from './pages/caneTripForm';
 
+export const BASE_URL = 'http://localhost:8087/';
 function App() {
   return (
     <BrowserRouter>
