@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../../App';
 
 const Address = () => {
   const navigate = useNavigate();
@@ -35,12 +36,11 @@ const Address = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Example: Send data to API
-      // const response = await fetch('https://api.example.com/address', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(addressData),
-      // });
+      const response = await fetch(BASE_URL + 'address', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(addressData),
+      });
 
       // if (response.ok) { navigate('/cane-supplier/billing'); }
       navigate('/cane-supplier/billing');

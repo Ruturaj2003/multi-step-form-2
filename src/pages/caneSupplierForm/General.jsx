@@ -23,9 +23,10 @@ const General = () => {
     e.preventDefault();
     try {
       // HTTP REQUEST
+      console.log(formData);
 
       // Navigate to the desired route after successful submission
-      navigate('/cane-supplier/address');
+      // navigate('/cane-supplier/address');
     } catch (error) {
       console.error('Error submitting form:', error);
     }
