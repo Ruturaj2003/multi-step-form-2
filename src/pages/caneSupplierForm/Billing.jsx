@@ -1,37 +1,42 @@
-import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { updateField } from '../../redux/caneSupplierSlice';
 
 const Billing = () => {
   const navigate = useNavigate();
-  // State management for form fields
-  const [formData, setFormData] = useState({
-    aadhaar: '',
-    pan: '',
-    primaryBank: '',
-    primaryAccount: '',
-    primaryIfsc: '',
-    secondaryBank: '',
-    secondaryAccount: '',
-    secondaryIfsc: '',
-  });
+  const dispatch = useDispatch();
 
-  // Handle input changes
+  // Get billing data from Redux store
+  const billingData = useSelector((state) => state.caneSupplier.billing);
+  // Get Supplier ID
+  const supplierId = useSelector((state) => state.common.supplierId);
+
+  // Handle input change and update Redux store
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    dispatch(
+      updateField({
+        section: 'billing',
+        field: e.target.name,
+        value: e.target.value,
+      })
+    );
   };
 
   // Handle form submission
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const requestBody = {
+      ...billingData,
+      supplierId,
+    };
     try {
-      //  HTTP request
+      // HTTP request logic here (if needed)
+      console.log(requestBody);
 
-      // Navigate after successful submission (change the route as needed)
+      // Navigate after submission
       navigate('/cane-supplier');
     } catch (error) {
-      console.error('Error submitting address:', error);
-      // Optionally, handle error state here
+      console.error('Error submitting billing details:', error);
     }
   };
 
@@ -54,7 +59,7 @@ const Billing = () => {
             <input
               type="text"
               name="aadhaar"
-              value={formData.aadhaar}
+              value={billingData.aadhaar}
               onChange={handleChange}
               placeholder="Enter Aadhaar Number"
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -67,7 +72,7 @@ const Billing = () => {
             <input
               type="text"
               name="pan"
-              value={formData.pan}
+              value={billingData.pan}
               onChange={handleChange}
               placeholder="Enter PAN Number"
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -85,7 +90,7 @@ const Billing = () => {
             <input
               type="text"
               name="primaryBank"
-              value={formData.primaryBank}
+              value={billingData.primaryBank}
               onChange={handleChange}
               placeholder="Enter Bank Name"
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -99,7 +104,7 @@ const Billing = () => {
             <input
               type="text"
               name="primaryAccount"
-              value={formData.primaryAccount}
+              value={billingData.primaryAccount}
               onChange={handleChange}
               placeholder="Enter Account Number"
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -113,7 +118,7 @@ const Billing = () => {
             <input
               type="text"
               name="primaryIfsc"
-              value={formData.primaryIfsc}
+              value={billingData.primaryIfsc}
               onChange={handleChange}
               placeholder="Enter IFSC Code"
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -128,7 +133,7 @@ const Billing = () => {
             <input
               type="text"
               name="secondaryBank"
-              value={formData.secondaryBank}
+              value={billingData.secondaryBank}
               onChange={handleChange}
               placeholder="Enter Bank Name"
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -142,7 +147,7 @@ const Billing = () => {
             <input
               type="text"
               name="secondaryAccount"
-              value={formData.secondaryAccount}
+              value={billingData.secondaryAccount}
               onChange={handleChange}
               placeholder="Enter Account Number"
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -156,7 +161,7 @@ const Billing = () => {
             <input
               type="text"
               name="secondaryIfsc"
-              value={formData.secondaryIfsc}
+              value={billingData.secondaryIfsc}
               onChange={handleChange}
               placeholder="Enter IFSC Code"
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
