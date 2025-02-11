@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { updateField } from '../../redux/caneSupplierSlice';
 import { BASE_URL } from '../../App';
 
 const Address = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // Get address data from Redux store
+  const addressData = useSelector((state) => state.caneSupplier.address);
+  const supplierId = useSelector((state) => state.common.supplierId);
 
   // Dropdown options
   const zones = ['Zone 1', 'Zone 2', 'Zone 3'];
@@ -12,35 +19,26 @@ const Address = () => {
   const states = ['State X', 'State Y', 'State Z'];
   const taluks = ['Taluk 1', 'Taluk 2', 'Taluk 3'];
 
-  // State to manage form data
-  const [addressData, setAddressData] = useState({
-    zone: '',
-    circle: '',
-    addressLine1: '',
-    addressLine2: '',
-    addressLine3: '',
-    village: '',
-    state: '',
-    pinCode: '',
-    taluk: '',
-    district: '',
-  });
-
-  // Handle change for all input fields
+  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setAddressData((prev) => ({ ...prev, [name]: value }));
+    dispatch(updateField({ section: 'address', field: name, value }));
   };
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const requestBody = {
+      ...addressData,
+      supplierId,
+    };
     try {
-      const response = await fetch(BASE_URL + 'address', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(addressData),
-      });
+      // const response = await fetch(BASE_URL + 'address', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(requestBody),
+      // });
+      console.log(requestBody);
 
       // if (response.ok) { navigate('/cane-supplier/billing'); }
       navigate('/cane-supplier/billing');
