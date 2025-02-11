@@ -9,7 +9,7 @@ export const generateSupplierId = createAsyncThunk(
   }
 );
 const initialState = {
-  supplierId: '',
+  supplierId: null,
 };
 
 const commonSlice = createSlice({

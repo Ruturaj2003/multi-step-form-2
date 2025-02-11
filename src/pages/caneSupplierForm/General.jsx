@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { generateSupplierId } from '../../redux/commonSlice';
 
 const General = () => {
+  const dispatch = useDispatch();
+  const supplierId = useSelector((state) => state.common.supplierId);
+
   // Initialize form state for all fields
   const [formData, setFormData] = useState({
     firstName: '',
@@ -9,7 +14,9 @@ const General = () => {
     email: '',
     phone: '',
   });
-
+  useEffect(() => {
+    dispatch(generateSupplierId());
+  }, []);
   const navigate = useNavigate();
 
   // Handle input changes
@@ -21,17 +28,34 @@ const General = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      // HTTP REQUEST
-      console.log(formData);
 
-      // Navigate to the desired route after successful submission
-      // navigate('/cane-supplier/address');
-    } catch (error) {
-      console.error('Error submitting form:', error);
-    }
+    // Generate supplierId only if it doesn't exist
+
+    // Wait a moment for Redux to update state before accessing supplierId
+    setTimeout(async () => {
+      const requestBody = {
+        ...formData,
+        supplierId: supplierId, // Use existing or new ID
+      };
+      console.log(requestBody);
+
+      // try {
+      //   const response = await fetch(BASE_URL + 'supplier', {
+      //     method: 'POST',
+      //     headers: { 'Content-Type': 'application/json' },
+      //     body: JSON.stringify(requestBody),
+      //   });
+
+      //   if (!response.ok) {
+      //     throw new Error('Failed to submit form');
+      //   }
+
+      //   console.log('Form submitted successfully:', requestBody);
+      // } catch (error) {
+      //   console.error('Error submitting form:', error);
+      // }
+    }, 100); // Small delay to ensure Redux state updates before use
   };
-
   return (
     <form
       onSubmit={handleSubmit}
