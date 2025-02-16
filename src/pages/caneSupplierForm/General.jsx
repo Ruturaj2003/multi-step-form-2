@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { generateSupplierId } from '../../redux/commonSlice';
 import { updateField } from '../../redux/caneSupplierSlice';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const General = () => {
   const dispatch = useDispatch();
@@ -22,10 +24,45 @@ const General = () => {
     dispatch(updateField({ section: 'personalInfo', field: name, value }));
   };
 
+  // Validation function
+  const validateForm = () => {
+    const { firstName, lastName, email, phone } = personalInfo;
+
+    // Name Validation (No numbers or special characters)
+    const nameRegex = /^[A-Za-z\s]+$/;
+    if (!firstName.trim() || !nameRegex.test(firstName)) {
+      toast.error('First name must contain only letters.');
+      return false;
+    }
+    if (!lastName.trim() || !nameRegex.test(lastName)) {
+      toast.error('Last name must contain only letters.');
+      return false;
+    }
+
+    // Email Validation (Basic Format)
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+      toast.error('Enter a valid email address.');
+      return false;
+    }
+
+    // Phone Number Validation (Indian Format)
+    const phoneRegex = /^[6-9]\d{9}$/;
+    if (!phoneRegex.test(phone)) {
+      toast.error('Enter a valid 10-digit Indian phone number.');
+      return false;
+    }
+
+    return true;
+  };
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!validateForm()) return; // Stop if validation fails
+
+    toast.success('Personal information saved successfully!');
     navigate('/cane-supplier/address');
   };
 
@@ -97,7 +134,7 @@ const General = () => {
               type="tel"
               id="phone"
               name="phone"
-              placeholder="123-456-7890"
+              placeholder="Enter 10-digit Phone Number"
               value={personalInfo.phone}
               onChange={handleChange}
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
