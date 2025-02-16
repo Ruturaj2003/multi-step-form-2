@@ -26,27 +26,7 @@ const General = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const requestBody = {
-      ...personalInfo,
-      supplierId,
-    };
     navigate('/cane-supplier/address');
-
-    console.log(requestBody);
-
-    // try {
-    //   const response = await fetch(BASE_URL + 'supplier', {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify(requestBody),
-    //   });
-
-    //   if (!response.ok) throw new Error('Failed to submit form');
-
-    //   console.log('Form submitted successfully:', requestBody);
-    // } catch (error) {
-    //   console.error('Error submitting form:', error);
-    // }
   };
 
   return (
