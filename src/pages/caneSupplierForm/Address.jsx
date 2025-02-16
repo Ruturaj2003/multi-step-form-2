@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { updateField } from '../../redux/caneSupplierSlice';
 import { BASE_URL } from '../../App';
+import { toast } from 'react-toastify';
 
 const Address = () => {
   const dispatch = useDispatch();
@@ -10,7 +11,6 @@ const Address = () => {
 
   // Get address data from Redux store
   const addressData = useSelector((state) => state.caneSupplier.address);
-  const supplierId = useSelector((state) => state.common.supplierId);
 
   // Dropdown options
   const zones = ['Zone 1', 'Zone 2', 'Zone 3'];
@@ -25,26 +25,69 @@ const Address = () => {
     dispatch(updateField({ section: 'address', field: name, value }));
   };
 
+  // validation
+  const validateFormData = () => {
+    const {
+      zone,
+      circle,
+      addressLine1,
+      addressLine2,
+      addressLine3,
+      village,
+      state,
+      pinCode,
+      taluk,
+      district,
+    } = addressData;
+    // At least one address field should be filled
+
+    if (!zone) {
+      toast.error('Please select a zone.');
+      return false;
+    }
+    if (!circle) {
+      toast.error('Please select a circle.');
+      return false;
+    }
+
+    if (!addressLine1.trim() && !addressLine2.trim() && !addressLine3.trim()) {
+      toast.error(
+        'At least one address field (Address Line 1, 2, or 3) must be filled.'
+      );
+      return false;
+    }
+    if (!village) {
+      toast.error('Please select a village.');
+      return false;
+    }
+    if (!state) {
+      toast.error('Please select a state.');
+      return false;
+    }
+    if (!pinCode.match(/^\d{6}$/)) {
+      toast.error('Enter a valid 6-digit Indian pin code.');
+      return false;
+    }
+    if (!district.trim()) {
+      toast.error('District cannot be empty.');
+      return false;
+    }
+    if (!taluk) {
+      toast.error('Please select a taluk.');
+      return false;
+    }
+
+    return true;
+  };
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const requestBody = {
-      ...addressData,
-      supplierId,
-    };
-    try {
-      // const response = await fetch(BASE_URL + 'address', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(requestBody),
-      // });
-      console.log(requestBody);
 
-      // if (response.ok) { navigate('/cane-supplier/billing'); }
-      navigate('/cane-supplier/billing');
-    } catch (error) {
-      console.error('Error submitting address:', error);
-    }
+    if (!validateFormData()) return; // Stop if validation fails
+
+    toast.success('Address saved successfully!');
+    navigate('/cane-supplier/billing');
   };
 
   return (

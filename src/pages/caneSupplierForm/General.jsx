@@ -12,7 +12,6 @@ const General = () => {
 
   // Get personal info and supplier ID from Redux store
   const personalInfo = useSelector((state) => state.caneSupplier.personalInfo);
-  const supplierId = useSelector((state) => state.common.supplierId);
 
   useEffect(() => {
     dispatch(generateSupplierId());
