@@ -21,6 +21,28 @@ const Billing = () => {
     );
   };
 
+  const handleAadhaarChange = (e) => {
+    // Get the input value
+    const value = e.target.value;
+
+    // Remove all non-digit characters
+    const digits = value.replace(/\D/g, '');
+
+    // Format the digits into the Aadhaar format (XXXX XXXX XXXX)
+    const formattedAadhaar = digits
+      .replace(/(\d{4})(\d)/, '$1 $2')
+      .replace(/(\d{4})(\d)/, '$1 $2');
+
+    // Update the state with the formatted value
+    dispatch(
+      updateField({
+        section: 'billing',
+        field: 'aadhaar',
+        value: formattedAadhaar.trim(),
+      })
+    );
+  };
+
   const validateForm = () => {
     const { aadhaar, pan, primaryBank, primaryAccount, primaryIfsc } =
       billingData;
@@ -116,7 +138,7 @@ const Billing = () => {
               type="text"
               name="aadhaar"
               value={billingData.aadhaar}
-              onChange={handleChange}
+              onChange={handleAadhaarChange}
               placeholder="Enter Aadhaar Number"
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
             />
