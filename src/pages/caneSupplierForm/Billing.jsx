@@ -152,7 +152,7 @@ const Billing = () => {
               type="text"
               name="aadhaar"
               value={billingData.aadhaar}
-              onChange={handleChange}
+              onChange={handleAadhaarChange}
               placeholder="Enter Aadhaar Number"
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
             />

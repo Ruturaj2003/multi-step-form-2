@@ -57,7 +57,6 @@ export const submitCaneSupplier = createAsyncThunk(
     // Validate required fields (excluding address lines)
     for (const key in flattened) {
       if (!excludeFields.includes(key) && !flattened[key].trim()) {
-        toast.error(`Please fill all required fields! Missing: ${key}`);
         return rejectWithValue(`Missing required field: ${key}`);
       }
     }
