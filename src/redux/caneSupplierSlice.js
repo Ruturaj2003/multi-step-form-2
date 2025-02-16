@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
-import { BASE_URL } from '../../App';
+import { BASE_URL } from '../App';
+import { nanoid } from 'nanoid';
 
 const initialState = {
   personalInfo: {
@@ -33,13 +34,12 @@ const initialState = {
   },
 };
 
-// Async thunk to submit form data with validation
+// Async thunk to submit form data with validation and supplierId generation
 export const submitCaneSupplier = createAsyncThunk(
   'caneSupplier/submitCaneSupplier',
   async (_, { getState, rejectWithValue }) => {
     const state = getState().caneSupplier;
-
-    // Flatten the state into a single object
+    // Flatten the nested state into a single object
     const flattened = Object.entries(state).reduce((acc, [section, fields]) => {
       return { ...acc, ...fields };
     }, {});
@@ -47,13 +47,16 @@ export const submitCaneSupplier = createAsyncThunk(
     // Fields to exclude from validation
     const excludeFields = ['addressLine1', 'addressLine2', 'addressLine3'];
 
-    // Validate required fields (excluding specific ones)
+    // Validate required fields (excluding address lines)
     for (const key in flattened) {
       if (!excludeFields.includes(key) && !flattened[key].trim()) {
         toast.error(`Please fill all required fields! Missing: ${key}`);
         return rejectWithValue(`Missing required field: ${key}`);
       }
     }
+
+    // Append a unique supplierId using nanoid
+    flattened.supplierId = nanoid();
 
     try {
       const response = await fetch(BASE_URL + 'supplier', {
@@ -89,9 +92,7 @@ const caneSupplierSlice = createSlice({
     resetForm: () => initialState,
   },
   extraReducers: (builder) => {
-    builder.addCase(submitCaneSupplier.fulfilled, (state, action) => {
-      return initialState;
-    });
+    builder.addCase(submitCaneSupplier.fulfilled, () => initialState);
   },
 });
 
