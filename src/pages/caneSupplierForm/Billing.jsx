@@ -8,8 +8,6 @@ const Billing = () => {
 
   // Get billing data from Redux store
   const billingData = useSelector((state) => state.caneSupplier.billing);
-  // Get Supplier ID
-  const supplierId = useSelector((state) => state.common.supplierId);
 
   // Handle input change and update Redux store
   const handleChange = (e) => {
@@ -25,14 +23,8 @@ const Billing = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const requestBody = {
-      ...billingData,
-      supplierId,
-    };
-    try {
-      // HTTP request logic here (if needed)
-      console.log(requestBody);
 
+    try {
       // Navigate after submission
       navigate('/cane-supplier');
     } catch (error) {

@@ -45,7 +45,14 @@ export const submitCaneSupplier = createAsyncThunk(
     }, {});
 
     // Fields to exclude from validation
-    const excludeFields = ['addressLine1', 'addressLine2', 'addressLine3'];
+    const excludeFields = [
+      'addressLine1',
+      'addressLine2',
+      'addressLine3',
+      'secondaryBank',
+      'secondaryAccount',
+      'secondaryIfsc',
+    ];
 
     // Validate required fields (excluding address lines)
     for (const key in flattened) {
