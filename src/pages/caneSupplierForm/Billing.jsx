@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { updateField } from '../../redux/caneSupplierSlice';
+import { toast } from 'react-toastify';
 
 const Billing = () => {
   const navigate = useNavigate();
@@ -20,11 +21,74 @@ const Billing = () => {
     );
   };
 
+  const validateForm = () => {
+    const { aadhaar, pan, primaryBank, primaryAccount, primaryIfsc } =
+      billingData;
+
+    // Regex patterns
+    const aadhaarRegex = /^[2-9]{1}[0-9]{3}\s[0-9]{4}\s[0-9]{4}$/; // Aadhaar: 12 digits with spaces
+    const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/; // PAN: 5 letters, 4 digits, 1 letter
+    const accountRegex = /^\d{9,18}$/; // 9 to 18 digits for account number
+    const ifscRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/; // IFSC: 4 letters, 0, 6 alphanumeric characters
+
+    // Check if required fields are filled and valid
+    if (!aadhaar.trim()) {
+      toast.error('Please enter Aadhaar Number');
+      return false;
+    } else if (!aadhaarRegex.test(aadhaar)) {
+      toast.error(
+        'Please enter a valid Aadhaar Number (format: 1234 5678 9012)'
+      );
+      return false;
+    }
+
+    if (!pan.trim()) {
+      toast.error('Please enter PAN Number');
+      return false;
+    } else if (!panRegex.test(pan)) {
+      toast.error('Please enter a valid PAN Number (format: ABCDE1234F)');
+      return false;
+    }
+
+    if (!primaryBank.trim()) {
+      toast.error('Please enter Primary Bank Name');
+      return false;
+    }
+
+    if (!primaryAccount.trim()) {
+      toast.error('Please enter Primary Account Number');
+      return false;
+    } else if (!accountRegex.test(primaryAccount)) {
+      toast.error(
+        'Please enter a valid Primary Account Number (9 to 18 digits)'
+      );
+      return false;
+    }
+
+    if (!primaryIfsc.trim()) {
+      toast.error('Please enter Primary IFSC Code');
+      return false;
+    } else if (!ifscRegex.test(primaryIfsc)) {
+      toast.error(
+        'Please enter a valid Primary IFSC Code (format: ABCD0123456)'
+      );
+      return false;
+    }
+
+    // All validation passed
+    return true;
+  };
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validate form before submitting
+    if (!validateForm()) return;
+
     try {
+      // Submit logic here (You can call a thunk if needed)
+
       // Navigate after submission
       navigate('/cane-supplier');
     } catch (error) {
