@@ -1,25 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
-const Output = ({
-  totalMemberWeight,
-  totalHarvestWeight,
-  totalTransportWeight,
-}) => {
-  // State for calculated weights
-  const [weights, setWeights] = useState({
-    memberWeight: totalMemberWeight || 0,
-    harvestWeight: totalHarvestWeight || 0,
-    transportWeight: totalTransportWeight || 0,
-  });
-
-  // Update state if props change
-  useEffect(() => {
-    setWeights({
-      memberWeight: totalMemberWeight || 0,
-      harvestWeight: totalHarvestWeight || 0,
-      transportWeight: totalTransportWeight || 0,
-    });
-  }, [totalMemberWeight, totalHarvestWeight, totalTransportWeight]);
+const Output = () => {
+  // Get calculated weights from Redux store
+  const { totalMemberWeight, totalHarvestWeight, totalTransportWeight } =
+    useSelector((state) => state.caneTrip.output);
 
   return (
     <div>
@@ -31,27 +15,32 @@ const Output = ({
           <input
             type="text"
             readOnly
-            value={weights.memberWeight}
+            value={totalMemberWeight}
+            placeholder="Auto-Generated"
             className="border rounded p-2 bg-gray-100"
           />
         </div>
+
         {/* Total Harvest Weight */}
         <div className="flex flex-col">
           <label className="text-sm">Total Harvest Weight</label>
           <input
             type="text"
             readOnly
-            value={weights.harvestWeight}
+            value={totalHarvestWeight}
+            placeholder="Auto-Generated"
             className="border rounded p-2 bg-gray-100"
           />
         </div>
+
         {/* Total Transport Weight */}
         <div className="flex flex-col">
           <label className="text-sm">Total Transport Weight</label>
           <input
             type="text"
             readOnly
-            value={weights.transportWeight}
+            value={totalTransportWeight}
+            placeholder="Auto-Generated"
             className="border rounded p-2 bg-gray-100"
           />
         </div>
