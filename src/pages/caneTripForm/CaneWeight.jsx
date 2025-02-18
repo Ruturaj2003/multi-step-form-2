@@ -1,44 +1,49 @@
-import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateField } from '../../redux/caneTripSlice';
 
 const CaneWeight = () => {
-  // State for form fields
-  const [formData, setFormData] = useState({
-    caneType: '',
-    loadWeight: '',
-    tareWeight: '',
-    bindingWeight: '',
-    netWeight: '',
-  });
+  const dispatch = useDispatch();
 
-  // Handle Input Change
+  // Get cane weight data from Redux store
+  const caneWeight = useSelector((state) => state.caneTrip.caneWeight);
+
+  // Handle input change and update Redux store
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+    const { name, value } = e.target;
+    dispatch(
+      updateField({
+        section: 'caneWeight',
+        field: name,
+        value: value,
+      })
+    );
 
-  // Handle Form Submit
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    // Auto-calculate Net Weight if relevant fields are updated
+    if (['loadWeight', 'tareWeight', 'bindingWeight'].includes(name)) {
+      const loadWeight =
+        parseFloat(name === 'loadWeight' ? value : caneWeight.loadWeight) || 0;
+      const tareWeight =
+        parseFloat(name === 'tareWeight' ? value : caneWeight.tareWeight) || 0;
+      const bindingWeight =
+        parseFloat(
+          name === 'bindingWeight' ? value : caneWeight.bindingWeight
+        ) || 0;
 
-    try {
-      const response = await fetch('https://api.example.com/cane-weight', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        alert('Data saved successfully!');
-      } else {
-        alert('Failed to save data!');
-      }
-    } catch (error) {
-      alert('An error occurred while saving data.');
+      const netWeight = loadWeight - tareWeight - bindingWeight;
+      dispatch(
+        updateField({
+          section: 'caneWeight',
+          field: 'netWeight',
+          value: netWeight.toFixed(2),
+        })
+      );
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="p-6 bg-white">
       <h2 className="text-lg font-semibold mb-4">Cane Weight Details</h2>
+
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         {/* Cane Type */}
         <div className="flex flex-col">
@@ -46,7 +51,7 @@ const CaneWeight = () => {
           <input
             type="text"
             name="caneType"
-            value={formData.caneType}
+            value={caneWeight.caneType}
             onChange={handleChange}
             placeholder="Enter Cane Type"
             className="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -59,7 +64,7 @@ const CaneWeight = () => {
           <input
             type="number"
             name="loadWeight"
-            value={formData.loadWeight}
+            value={caneWeight.loadWeight}
             onChange={handleChange}
             placeholder="Enter Load Weight"
             className="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -72,36 +77,36 @@ const CaneWeight = () => {
           <input
             type="number"
             name="tareWeight"
-            value={formData.tareWeight}
+            value={caneWeight.tareWeight}
             onChange={handleChange}
             placeholder="Enter Tare Weight"
             className="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
           />
         </div>
 
-        {/* Binding Wt. */}
+        {/* Binding Weight */}
         <div className="flex flex-col">
           <label className="text-sm">Binding Wt.</label>
           <input
             type="number"
             name="bindingWeight"
-            value={formData.bindingWeight}
+            value={caneWeight.bindingWeight}
             onChange={handleChange}
             placeholder="Enter Binding Wt."
             className="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
           />
         </div>
 
-        {/* Net Weight */}
+        {/* Net Weight (Auto-calculated) */}
         <div className="flex flex-col">
           <label className="text-sm">Net Weight</label>
           <input
             type="number"
             name="netWeight"
-            value={formData.netWeight}
-            onChange={handleChange}
-            placeholder="Enter Net Weight"
-            className="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            value={caneWeight.netWeight}
+            readOnly
+            placeholder="Auto-calculated"
+            className="border rounded p-2 bg-gray-200 focus:outline-none focus:ring-2 focus:ring-teal-500"
           />
         </div>
       </div>
