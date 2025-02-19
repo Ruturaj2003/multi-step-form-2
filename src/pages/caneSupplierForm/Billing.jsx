@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { updateField } from '../../redux/caneSupplierSlice';
+import { saveBilling, updateField } from '../../redux/caneSupplierSlice';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -118,17 +118,11 @@ const Billing = () => {
     // Dont Do anything unless passes
     if (!validateForm()) return;
     try {
-      dispatch(submitCaneSupplier())
-        .unwrap()
-        .then(() => {
-          toast.success('Billing details submitted successfully!');
-          navigate('/cane-supplier');
-        })
-        .catch((error) => {
-          toast.error(`Submission error: ${error}`);
-        });
+      await dispatch(saveBilling()).unwrap(); // Dispatch action to save data
+
+      navigate('/cane-supplier/'); // Navigate only if saving is successful
     } catch (error) {
-      console.error('Error submitting billing details:', error);
+      console.log(`Failed to save Billing information: ${error}`);
     }
   };
 

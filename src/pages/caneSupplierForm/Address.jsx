@@ -88,10 +88,10 @@ const Address = () => {
 
     try {
       await dispatch(saveAddress()).unwrap(); // Dispatch action to save data
-      toast.success('Address information saved successfully!');
+
       navigate('/cane-supplier/billing'); // Navigate only if saving is successful
     } catch (error) {
-      toast.error(`Failed to save address information: ${error}`);
+      console.log(`Failed to save address information: ${error}`);
     }
   };
 

@@ -57,10 +57,10 @@ const General = () => {
 
     try {
       await dispatch(savePersonalInfo()).unwrap(); // Dispatch action to save data
-      toast.success('Personal information saved successfully!');
+
       navigate('/cane-supplier/address'); // Navigate only if saving is successful
     } catch (error) {
-      toast.error(`Failed to save personal information: ${error}`);
+      console.log(`Failed to save personal information: ${error}`);
     }
   };
 
