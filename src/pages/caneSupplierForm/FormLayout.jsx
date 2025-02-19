@@ -3,7 +3,7 @@ import Navbar from '../../components/caneSupplier/Navbar';
 import { Outlet } from 'react-router-dom';
 import { IoPersonCircle, IoSearch } from 'react-icons/io5';
 
-const indianNames = [
+const names = [
   'Aarav',
   'Aditi',
   'Bhavesh',
@@ -24,23 +24,42 @@ const indianNames = [
   'Riya',
   'Siddharth',
   'Tanvi',
+  'Umesh',
+  'Vikram',
+  'Yash',
 ];
 
 const FormLayout = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
+  const [activeIndex, setActiveIndex] = useState(-1);
 
   const handleSearch = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
+    setActiveIndex(-1);
 
     if (value) {
-      const filteredNames = indianNames.filter((name) =>
+      const filteredNames = names.filter((name) =>
         name.toLowerCase().includes(value.toLowerCase())
       );
       setSuggestions(filteredNames);
     } else {
       setSuggestions([]);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'ArrowDown') {
+      setActiveIndex((prev) =>
+        prev < suggestions.length - 1 ? prev + 1 : prev
+      );
+    } else if (e.key === 'ArrowUp') {
+      setActiveIndex((prev) => (prev > 0 ? prev - 1 : 0));
+    } else if (e.key === 'Enter' && activeIndex !== -1) {
+      setSearchTerm(suggestions[activeIndex]);
+      setSuggestions([]);
+      setActiveIndex(-1);
     }
   };
 
@@ -62,19 +81,27 @@ const FormLayout = () => {
                 className="ml-2 outline-none bg-transparent text-teal-700 placeholder-teal-400"
                 value={searchTerm}
                 onChange={handleSearch}
+                onKeyDown={handleKeyDown}
               />
             </div>
 
-            {/* Suggestions Dropdown */}
+            {/* Suggestions Dropdown with Fixed Height & Scroll */}
             {suggestions.length > 0 && (
-              <ul className="absolute left-0 mt-1 w-full bg-white border rounded-lg shadow-md z-10">
+              <ul className="absolute left-0 mt-1 w-full bg-white border rounded-lg shadow-md z-10 max-h-40 overflow-y-auto">
                 {suggestions.map((name, index) => (
                   <li
                     key={index}
-                    className="px-4 py-2 cursor-pointer hover:bg-teal-100"
+                    className={`px-4 py-2 cursor-pointer ${
+                      activeIndex === index
+                        ? 'bg-teal-100'
+                        : 'hover:bg-teal-100'
+                    }`}
+                    onMouseEnter={() => setActiveIndex(index)}
+                    onMouseLeave={() => setActiveIndex(-1)}
                     onClick={() => {
                       setSearchTerm(name);
                       setSuggestions([]);
+                      setActiveIndex(-1);
                     }}
                   >
                     {name}
