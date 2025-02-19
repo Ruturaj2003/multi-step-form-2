@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { updateField } from '../../redux/caneSupplierSlice';
-import { BASE_URL } from '../../App';
+import { saveAddress, updateField } from '../../redux/caneSupplierSlice';
+
 import { toast } from 'react-toastify';
 
 const Address = () => {
@@ -86,8 +86,13 @@ const Address = () => {
 
     if (!validateFormData()) return; // Stop if validation fails
 
-    toast.success('Address saved successfully!');
-    navigate('/cane-supplier/billing');
+    try {
+      await dispatch(saveAddress()).unwrap(); // Dispatch action to save data
+      toast.success('Address information saved successfully!');
+      navigate('/cane-supplier/billing'); // Navigate only if saving is successful
+    } catch (error) {
+      toast.error(`Failed to save address information: ${error}`);
+    }
   };
 
   return (
