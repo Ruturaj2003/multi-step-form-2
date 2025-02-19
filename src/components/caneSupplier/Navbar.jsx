@@ -1,8 +1,11 @@
 import { Home, List, User } from 'lucide-react';
+import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Navbar = () => {
   const location = useLocation();
+  const supplierId = useSelector((state) => state.caneSupplier.supplierId);
 
   // Helper Function to identify the active link
 
@@ -21,22 +24,43 @@ const Navbar = () => {
       </Link>
 
       {/* Address Tab */}
-      <Link
-        to={'/cane-supplier/address'}
-        className={getLinkClass('/cane-supplier/address')}
-      >
-        <Home size={16} />
-        <span className="text-sm sm:text-base">Address</span>
-      </Link>
+      {supplierId ? (
+        <>
+          <Link
+            to={'/cane-supplier/address'}
+            className={getLinkClass('/cane-supplier/address')}
+          >
+            <Home size={16} />
+            <span className="text-sm sm:text-base">Address</span>
+          </Link>
 
-      {/* Billing Tab */}
-      <Link
-        to={'/cane-supplier/billing'}
-        className={getLinkClass('/cane-supplier/billing')}
-      >
-        <List size={16} />
-        <span className="text-sm sm:text-base">Billing</span>
-      </Link>
+          <Link
+            to={'/cane-supplier/billing'}
+            className={getLinkClass('/cane-supplier/billing')}
+          >
+            <List size={16} />
+            <span className="text-sm sm:text-base">Billing</span>
+          </Link>
+        </>
+      ) : (
+        <>
+          <button
+            onClick={() => toast.error('Save Personal Details First')}
+            className={getLinkClass('/cane-supplier/address')}
+          >
+            <Home size={16} />
+            <span className="text-sm sm:text-base">Address</span>
+          </button>
+
+          <button
+            onClick={() => toast.error('Save Personal Details First')}
+            className={getLinkClass('/cane-supplier/billing')}
+          >
+            <List size={16} />
+            <span className="text-sm sm:text-base">Billing</span>
+          </button>
+        </>
+      )}
     </div>
   );
 };
