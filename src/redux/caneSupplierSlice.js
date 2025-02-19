@@ -58,9 +58,15 @@ export const savePersonalInfo = createAsyncThunk(
       // Update mode: PUT request
       url = `${BASE_URL}supplier/${supplierId}`;
       method = 'PUT';
-      payload.supplierId = supplierId; // include supplierId in payload if needed
+      payload.supplierId = supplierId;
+      console.log(payload);
+
+      // include
+      // supplierId in payload if
+      // needed
     } else {
       // Create mode: generate a new supplierId and POST request
+      console.log(payload);
       const newSupplierId = nanoid();
       payload.supplierId = newSupplierId;
       url = `${BASE_URL}supplier`;

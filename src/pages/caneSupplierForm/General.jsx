@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { generateSupplierId } from '../../redux/commonSlice';
-import { updateField } from '../../redux/caneSupplierSlice';
+import { savePersonalInfo, updateField } from '../../redux/caneSupplierSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -10,7 +9,7 @@ const General = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Get personal info and supplier ID from Redux store
+  // Get personal info from Redux store
   const personalInfo = useSelector((state) => state.caneSupplier.personalInfo);
 
   // Handle input changes
@@ -54,11 +53,15 @@ const General = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!validateForm()) return; // Stop if validation fails
 
-    toast.success('Personal information saved successfully!');
-    navigate('/cane-supplier/address');
+    try {
+      await dispatch(savePersonalInfo()).unwrap(); // Dispatch action to save data
+      toast.success('Personal information saved successfully!');
+      navigate('/cane-supplier/address'); // Navigate only if saving is successful
+    } catch (error) {
+      toast.error(`Failed to save personal information: ${error}`);
+    }
   };
 
   return (
