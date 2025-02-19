@@ -55,13 +55,14 @@ export const savePersonalInfo = createAsyncThunk(
     const payload = { ...personalInfo };
 
     if (supplierId) {
-      // Update mode: PUT /supplier/{supplierId}
+      // Update mode: PUT request
       url = `${BASE_URL}supplier/${supplierId}`;
       method = 'PUT';
-      payload.supplierId = supplierId; // optionally include it
+      payload.supplierId = supplierId; // include supplierId in payload if needed
     } else {
-      // Create mode: POST /supplier
-      payload.supplierId = nanoid();
+      // Create mode: generate a new supplierId and POST request
+      const newSupplierId = nanoid();
+      payload.supplierId = newSupplierId;
       url = `${BASE_URL}supplier`;
       method = 'POST';
     }
@@ -101,11 +102,12 @@ export const saveAddress = createAsyncThunk(
     const payload = { ...address };
 
     if (addressId) {
-      // Update existing address: PUT /supplier/{supplierId}/address/{addressId}
+      // Update existing address: PUT request
       url = `${BASE_URL}supplier/${supplierId}/address/${addressId}`;
       method = 'PUT';
     } else {
-      // Create new address: POST /supplier/{supplierId}/address
+      // First-time submission: assign addressId equal to supplierId and POST request
+      payload.addressId = supplierId;
       url = `${BASE_URL}supplier/${supplierId}/address`;
       method = 'POST';
     }
@@ -145,11 +147,12 @@ export const saveBilling = createAsyncThunk(
     const payload = { ...billing };
 
     if (billingId) {
-      // Update existing billing: PUT /supplier/{supplierId}/billing/{billingId}
+      // Update existing billing: PUT request
       url = `${BASE_URL}supplier/${supplierId}/billing/${billingId}`;
       method = 'PUT';
     } else {
-      // Create new billing: POST /supplier/{supplierId}/billing
+      // First-time submission: assign billingId equal to supplierId and POST request
+      payload.billingId = supplierId;
       url = `${BASE_URL}supplier/${supplierId}/billing`;
       method = 'POST';
     }
@@ -188,16 +191,19 @@ const caneSupplierSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(savePersonalInfo.fulfilled, (state, action) => {
-        // Expect the response to return an object with the supplier id.
-        state.supplierId = action.payload.id || state.supplierId;
+        // Set supplierId from response, or retain the one already set
+        state.supplierId =
+          action.payload.id || action.payload.supplierId || state.supplierId;
       })
       .addCase(saveAddress.fulfilled, (state, action) => {
-        // Expect the response to return the address id.
-        state.addressId = action.payload.id || state.addressId;
+        // Set addressId from response, or retain the one already set
+        state.addressId =
+          action.payload.id || action.payload.addressId || state.addressId;
       })
       .addCase(saveBilling.fulfilled, (state, action) => {
-        // Expect the response to return the billing id.
-        state.billingId = action.payload.id || state.billingId;
+        // Set billingId from response, or retain the one already set
+        state.billingId =
+          action.payload.id || action.payload.billingId || state.billingId;
       });
   },
 });
