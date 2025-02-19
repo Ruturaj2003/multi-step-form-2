@@ -65,7 +65,7 @@ const Address = () => {
       return false;
     }
     if (!pinCode.match(/^\d{6}$/)) {
-      toast.error('Enter a valid 6-digit Indian pin code.');
+      toast.error('Enter a valid 6-digit  pin code.');
       return false;
     }
     if (!district.trim()) {
