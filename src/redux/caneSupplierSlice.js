@@ -198,18 +198,18 @@ const caneSupplierSlice = createSlice({
     builder
       .addCase(savePersonalInfo.fulfilled, (state, action) => {
         // Set supplierId from response, or retain the one already set
-        state.supplierId =
-          action.payload.id || action.payload.supplierId || state.supplierId;
+        // state.supplierId =
+        //   action.payload.id || action.payload.supplierId || state.supplierId;
       })
       .addCase(saveAddress.fulfilled, (state, action) => {
         // Set addressId from response, or retain the one already set
-        state.addressId =
-          action.payload.id || action.payload.addressId || state.addressId;
+        // state.addressId =
+        //   action.payload.id || action.payload.addressId || state.addressId;
       })
       .addCase(saveBilling.fulfilled, (state, action) => {
         // Set billingId from response, or retain the one already set
-        state.billingId =
-          action.payload.id || action.payload.billingId || state.billingId;
+        // state.billingId =
+        //   action.payload.id || action.payload.billingId || state.billingId;
       });
   },
 });
