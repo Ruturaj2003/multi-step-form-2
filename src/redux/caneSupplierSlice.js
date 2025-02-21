@@ -113,7 +113,7 @@ export const saveAddress = createAsyncThunk(
       method = 'PUT';
     } else {
       // First-time submission: assign addressId equal to supplierId and POST request
-      payload.addressId = supplierId;
+      // payload.addressId = supplierId;
       url = `${BASE_URL}supplier/${supplierId}/address`;
       method = 'POST';
     }
@@ -158,7 +158,7 @@ export const saveBilling = createAsyncThunk(
       method = 'PUT';
     } else {
       // First-time submission: assign billingId equal to supplierId and POST request
-      payload.billingId = supplierId;
+      // payload.billingId = supplierId;
       url = `${BASE_URL}supplier/${supplierId}/billing`;
       method = 'POST';
     }
