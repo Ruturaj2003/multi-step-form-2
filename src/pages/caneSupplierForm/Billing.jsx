@@ -37,7 +37,6 @@ const Billing = () => {
     } = billingData;
 
     // Validation regex
-
     const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
     const accountRegex = /^\d{9,18}$/;
     const ifscRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
@@ -88,49 +87,50 @@ const Billing = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Dont Do anything unless passes
+    // Don't do anything unless passes
     if (!validateForm()) return;
+
+    setLoading(true); // Set loading state
     try {
       await dispatch(saveBilling()).unwrap(); // Dispatch action to save data
-
       navigate('/cane-supplier/'); // Navigate only if saving is successful
     } catch (error) {
       console.log(`Failed to save Billing information: ${error}`);
+    } finally {
+      setLoading(false); // Reset loading state
     }
   };
 
   return (
     <form
-      className="h-[530px] flex flex-col justify-between bg-white p-6"
+      className="flex flex-col justify-between bg-white p-6 rounded-lg "
       onSubmit={handleSubmit}
     >
       {/* Form Section */}
       <div className="w-full flex-1">
-        <h2 className="text-lg font-semibold text-gray-700 mb-4">
+        <h2 className="text-xl font-semibold text-gray-800 mb-6">
           Billing Details
         </h2>
 
         {/* Form Grid Layout */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {/* PAN Number */}
           <div className="flex flex-col">
-            <label className="text-sm text-gray-600 mb-1">PAN Number</label>
+            <label className="text-sm text-gray-700 mb-1">PAN Number</label>
             <input
               type="text"
               name="pan"
               value={billingData.pan}
               onChange={handleChange}
               placeholder="Enter PAN Number"
-              className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+              required
             />
           </div>
 
-          {/* Empty div for spacing on large screens */}
-          <div className="hidden md:block"></div>
-
           {/* Primary Bank Details */}
           <div className="flex flex-col">
-            <label className="text-sm text-gray-600 mb-1">
+            <label className="text-sm text-gray-700 mb-1">
               Primary Bank Name
             </label>
             <input
@@ -139,12 +139,13 @@ const Billing = () => {
               value={billingData.primaryBank}
               onChange={handleChange}
               placeholder="Enter Bank Name"
-              className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+              required
             />
           </div>
 
           <div className="flex flex-col">
-            <label className="text-sm text-gray-600 mb-1">
+            <label className="text-sm text-gray-700 mb-1">
               A/C Number (Primary Bank)
             </label>
             <input
@@ -153,12 +154,13 @@ const Billing = () => {
               value={billingData.primaryAccount}
               onChange={handleChange}
               placeholder="Enter Account Number"
-              className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+              required
             />
           </div>
 
           <div className="flex flex-col">
-            <label className="text-sm text-gray-600 mb-1">
+            <label className="text-sm text-gray-700 mb-1">
               IFSC Code (Primary Bank)
             </label>
             <input
@@ -167,13 +169,14 @@ const Billing = () => {
               value={billingData.primaryIfsc}
               onChange={handleChange}
               placeholder="Enter IFSC Code"
-              className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+              required
             />
           </div>
 
           {/* Secondary Bank Details */}
           <div className="flex flex-col">
-            <label className="text-sm text-gray-600 mb-1">
+            <label className="text-sm text-gray-700 mb-1">
               Secondary Bank Name
             </label>
             <input
@@ -182,12 +185,12 @@ const Billing = () => {
               value={billingData.secondaryBank}
               onChange={handleChange}
               placeholder="Enter Bank Name"
-              className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
             />
           </div>
 
           <div className="flex flex-col">
-            <label className="text-sm text-gray-600 mb-1">
+            <label className="text-sm text-gray-700 mb-1">
               A/C Number (Secondary Bank)
             </label>
             <input
@@ -196,12 +199,12 @@ const Billing = () => {
               value={billingData.secondaryAccount}
               onChange={handleChange}
               placeholder="Enter Account Number"
-              className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
             />
           </div>
 
           <div className="flex flex-col">
-            <label className="text-sm text-gray-600 mb-1">
+            <label className="text-sm text-gray-700 mb-1">
               IFSC Code (Secondary Bank)
             </label>
             <input
@@ -210,14 +213,14 @@ const Billing = () => {
               value={billingData.secondaryIfsc}
               onChange={handleChange}
               placeholder="Enter IFSC Code"
-              className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
             />
           </div>
         </div>
       </div>
 
       {/* Save Button Section */}
-      <div className="flex justify-end items-center p-4">
+      <div className="flex justify-end items-center mt-6">
         <button
           type="submit"
           disabled={loading} // Disable button while loading
