@@ -254,13 +254,13 @@ const Billing = () => {
                       <div className="flex space-x-2">
                         <button
                           onClick={() => handleSaveEdit(index)}
-                          className="text-green-600 text-xl"
+                          className="text-teal-600 text-xl"
                         >
                           <FaCheck />
                         </button>
                         <button
                           onClick={handleCancelEdit}
-                          className="text-red-600 text-xl"
+                          className="text-teal-600 text-xl"
                         >
                           <FaTimes />
                         </button>
@@ -269,13 +269,13 @@ const Billing = () => {
                       <div className="flex space-x-2">
                         <button
                           onClick={() => handleEdit(index, item)}
-                          className="text-blue-600 text-xl"
+                          className="text-teal-600 text-xl"
                         >
                           <FaEdit />
                         </button>
                         <button
                           onClick={() => handleDelete(index)}
-                          className="text-red-600 text-xl"
+                          className="text-teal-600 text-xl"
                         >
                           <FaTrash />
                         </button>
