@@ -65,9 +65,9 @@ const FormLayout = () => {
 
   return (
     <div className="bg-teal-50 w-screen min-h-screen flex justify-center items-start">
-      <div className="bg-white rounded-3xl shadow-2xl min-w-[70vw] max-w-[80vw] max-h-[90vh] mt-10 p-6 overflow-y-auto">
+      <div className="bg-white rounded-3xl shadow-2xl min-w-[70vw] max-w-[85vw] max-h-[90vh] mt-10 p-6 overflow-y-auto">
         {/* Top Bar Container */}
-        <div className="h-20 w-full bg-teal-700 rounded-t-3xl rounded-b-xl flex justify-between px-4 items-center relative">
+        <div className="h-20 w-full gap-x-4 bg-teal-700 rounded-t-3xl rounded-b-xl flex justify-between px-4 items-center relative">
           {/* Navigation Container */}
           <Navbar />
 
