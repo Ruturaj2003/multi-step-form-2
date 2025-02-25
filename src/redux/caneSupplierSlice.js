@@ -26,14 +26,7 @@ const initialState = {
     taluk: '',
     district: '',
   },
-  billing: {
-    primaryBank: '',
-    primaryAccount: '',
-    primaryIfsc: '',
-    secondaryBank: '',
-    secondaryAccount: '',
-    secondaryIfsc: '',
-  },
+  billing: {},
   supplierId: null, // Set after personal details are saved
   addressId: null, // Set after address is saved
   billingId: null, // Set after billing is saved

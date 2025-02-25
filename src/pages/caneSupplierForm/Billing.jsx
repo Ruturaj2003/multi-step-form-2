@@ -152,128 +152,37 @@ const Billing = () => {
   };
 
   return (
-    <div className="flex flex-col justify-between bg-white p-6 rounded-lg">
-      <form onSubmit={handleSubmit}>
-        {/* Form Section */}
-        <div className="w-full flex-1">
-          <h2 className="text-xl font-semibold text-gray-800 mb-6">
-            Billing Details
-          </h2>
+    <div className="flex flex-col justify-between bg-white p-6 pt-1 rounded-lg">
+      {/* Form Section */}
+      <div className="w-full flex-1">
+        <h2 className="text-xl font-semibold text-gray-800 mb-6">
+          Billing Details
+        </h2>
 
-          {/* Form Grid Layout */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {/* Primary Bank Details */}
-            <div className="flex flex-col">
-              <label className="text-sm text-gray-700 mb-1">
-                Primary Bank Name
-              </label>
-              <input
-                type="text"
-                name="primaryBank"
-                value={billingData.primaryBank}
-                onChange={handleChange}
-                placeholder="Enter Bank Name"
-                className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
-                required
-              />
-            </div>
+        {/* Table Container Layout */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 bg-green-500 h-[320px] md:grid-cols-3 gap-6"></div>
+      </div>
 
-            <div className="flex flex-col">
-              <label className="text-sm text-gray-700 mb-1">
-                A/C Number (Primary Bank)
-              </label>
-              <input
-                type="text"
-                name="primaryAccount"
-                value={billingData.primaryAccount}
-                onChange={handleChange}
-                placeholder="Enter Account Number"
-                className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
-                required
-              />
-            </div>
-
-            <div className="flex flex-col">
-              <label className="text-sm text-gray-700 mb-1">
-                IFSC Code (Primary Bank)
-              </label>
-              <input
-                type="text"
-                name="primaryIfsc"
-                value={billingData.primaryIfsc}
-                onChange={handleChange}
-                placeholder="Enter IFSC Code"
-                className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
-                required
-              />
-            </div>
-
-            {/* Secondary Bank Details */}
-            <div className="flex flex-col">
-              <label className="text-sm text-gray-700 mb-1">
-                Secondary Bank Name
-              </label>
-              <input
-                type="text"
-                name="secondaryBank"
-                value={billingData.secondaryBank}
-                onChange={handleChange}
-                placeholder="Enter Bank Name"
-                className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
-              />
-            </div>
-
-            <div className="flex flex-col">
-              <label className="text-sm text-gray-700 mb-1">
-                A/C Number (Secondary Bank)
-              </label>
-              <input
-                type="text"
-                name="secondaryAccount"
-                value={billingData.secondaryAccount}
-                onChange={handleChange}
-                placeholder="Enter Account Number"
-                className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
-              />
-            </div>
-
-            <div className="flex flex-col">
-              <label className="text-sm text-gray-700 mb-1">
-                IFSC Code (Secondary Bank)
-              </label>
-              <input
-                type="text"
-                name="secondaryIfsc"
-                value={billingData.secondaryIfsc}
-                onChange={handleChange}
-                placeholder="Enter IFSC Code"
-                className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Save Button Section */}
-        <div className="flex justify-between items-center mt-6">
-          <button
-            type="button"
-            onClick={() => setShowHistory(true)}
-            className="h-[40px] px-6 text-white bg-teal-600 border border-teal-600 rounded-md hover:bg-teal-500 hover:border-blue-500 transition-all"
-          >
-            View Billing History
-          </button>
-          <button
-            type="submit"
-            disabled={loading} // Disable button while loading
-            className={`h-[36px] px-5 text-white ${
-              loading ? 'bg-gray-400' : 'bg-teal-700'
-            } border-2 border-teal-700 rounded-md hover:bg-teal-600 transition`}
-          >
-            {loading ? 'Submitting...' : 'Save'}
-          </button>
-        </div>
-      </form>
-
+      {/* Save Button Section */}
+      <div className="flex justify-between items-center mt-6">
+        <button
+          type="button"
+          onClick={() => setShowHistory(true)}
+          className="h-[40px] px-6 text-white bg-teal-600 border border-teal-600 rounded-md hover:bg-teal-500 hover:border-blue-500 transition-all"
+        >
+          View Billing History
+        </button>
+        <button
+          type="submit"
+          onClick={handleSubmit}
+          disabled={loading} // Disable button while loading
+          className={`h-[36px] px-5 text-white ${
+            loading ? 'bg-gray-400' : 'bg-teal-700'
+          } border-2 border-teal-700 rounded-md hover:bg-teal-600 transition`}
+        >
+          {loading ? 'Submitting...' : 'Save'}
+        </button>
+      </div>
       {showHistory && (
         <div
           className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-md transition-opacity"
@@ -298,22 +207,39 @@ const Billing = () => {
 
             {/* Table */}
             <div className="overflow-x-auto">
-              <table className="min-w-full border border-gray-300 rounded-lg">
+              <table className="min-w-full border border-teal-300 rounded-lg shadow-lg">
                 <thead>
-                  <tr className="bg-gray-100 text-gray-700">
-                    <th className="border px-4 py-2 text-left">Date</th>
-                    <th className="border px-4 py-2 text-left">Account No</th>
-                    <th className="border px-4 py-2 text-left">IFSC Code</th>
-                    <th className="border px-4 py-2 text-left">Amount</th>
+                  <tr className="bg-teal-100 text-teal-800">
+                    <th className="border-b border-teal-300 px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">
+                      Date
+                    </th>
+                    <th className="border-b border-teal-300 px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">
+                      Account No
+                    </th>
+                    <th className="border-b border-teal-300 px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">
+                      IFSC Code
+                    </th>
+                    <th className="border-b border-teal-300 px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">
+                      Amount
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {billingHistory.map((item, index) => (
-                    <tr key={index} className="hover:bg-teal-500/10">
-                      <td className="border px-4 py-2">{item.date}</td>
-                      <td className="border px-4 py-2">{item.accountNo}</td>
-                      <td className="border px-4 py-2">{item.ifsc}</td>
-                      <td className="border px-4 py-2 font-semibold text-green-600">
+                    <tr
+                      key={index}
+                      className="hover:bg-teal-200 transition duration-200"
+                    >
+                      <td className="border-b border-teal-300 px-6 py-4 text-sm text-gray-700">
+                        {item.date}
+                      </td>
+                      <td className="border-b border-teal-300 px-6 py-4 text-sm text-gray-700">
+                        {item.accountNo}
+                      </td>
+                      <td className="border-b border-teal-300 px-6 py-4 text-sm text-gray-700">
+                        {item.ifsc}
+                      </td>
+                      <td className="border-b border-teal-300 px-6 py-4 text-sm font-semibold text-teal-600">
                         ₹{item.amount}
                       </td>
                     </tr>
