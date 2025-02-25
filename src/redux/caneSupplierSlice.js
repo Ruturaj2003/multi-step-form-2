@@ -8,6 +8,7 @@ const initialState = {
     firstName: '',
     middleName: '',
     lastName: '',
+    aadhaar: '',
     email: '',
     phone: '',
     supplierType: '',

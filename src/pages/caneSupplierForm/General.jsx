@@ -19,9 +19,34 @@ const General = () => {
     dispatch(updateField({ section: 'personalInfo', field: name, value }));
   };
 
+  // Handle Aadhaar input change with formatting
+  const handleAadhaarChange = (e) => {
+    let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
+    if (value.length > 12) value = value.slice(0, 12); // Limit to 12 digits
+
+    // Format Aadhaar: XXXX XXXX XXXX
+    const formattedAadhaar = value.replace(/(\d{4})(?=\d)/g, '$1 ').trim();
+
+    dispatch(
+      updateField({
+        section: 'personalInfo',
+        field: 'aadhaar',
+        value: formattedAadhaar,
+      })
+    );
+  };
+
   // Validation function
   const validateForm = () => {
-    const { firstName, lastName, email, phone, supplierType } = personalInfo;
+    const {
+      firstName,
+      lastName,
+      email,
+      phone,
+      supplierType,
+      middleName,
+      aadhaar,
+    } = personalInfo;
 
     // Name Validation (No numbers or special characters)
     const nameRegex = /^[A-Za-z\s]+$/;
@@ -31,6 +56,21 @@ const General = () => {
     }
     if (!lastName.trim() || !nameRegex.test(lastName)) {
       toast.error('Last name must contain only letters.');
+      return false;
+    }
+    if (!middleName.trim() || !nameRegex.test(lastName)) {
+      toast.error('Middle name must contain only letters.');
+      return false;
+    }
+
+    const aadhaarRegex = /^[2-9]{1}[0-9]{3}\s[0-9]{4}\s[0-9]{4}$/;
+
+    // Check required fields
+    if (!aadhaar.trim()) {
+      toast.error('Please enter Aadhaar Number');
+      return false;
+    } else if (!aadhaarRegex.test(aadhaar)) {
+      toast.error('Invalid Aadhaar Number (format: 1234 5678 9012)');
       return false;
     }
 
@@ -123,6 +163,19 @@ const General = () => {
               placeholder="Enter Last Name"
               value={personalInfo.lastName}
               onChange={handleChange}
+              className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            />
+          </div>
+
+          {/* Aadhaar Number */}
+          <div className="flex flex-col">
+            <label className="text-sm text-gray-600 mb-1">Aadhaar Number</label>
+            <input
+              type="text"
+              name="aadhaar"
+              value={personalInfo.aadhaar}
+              onChange={handleAadhaarChange}
+              placeholder="Enter Aadhaar Number"
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
             />
           </div>

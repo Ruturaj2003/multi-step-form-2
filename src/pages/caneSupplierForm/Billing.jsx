@@ -24,27 +24,9 @@ const Billing = () => {
     );
   };
 
-  // Handle Aadhaar input change with formatting
-  const handleAadhaarChange = (e) => {
-    let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
-    if (value.length > 12) value = value.slice(0, 12); // Limit to 12 digits
-
-    // Format Aadhaar: XXXX XXXX XXXX
-    const formattedAadhaar = value.replace(/(\d{4})(?=\d)/g, '$1 ').trim();
-
-    dispatch(
-      updateField({
-        section: 'billing',
-        field: 'aadhaar',
-        value: formattedAadhaar,
-      })
-    );
-  };
-
   // Validation function
   const validateForm = () => {
     const {
-      aadhaar,
       pan,
       primaryBank,
       primaryAccount,
@@ -55,19 +37,10 @@ const Billing = () => {
     } = billingData;
 
     // Validation regex
-    const aadhaarRegex = /^[2-9]{1}[0-9]{3}\s[0-9]{4}\s[0-9]{4}$/;
+
     const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
     const accountRegex = /^\d{9,18}$/;
     const ifscRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
-
-    // Check required fields
-    if (!aadhaar.trim()) {
-      toast.error('Please enter Aadhaar Number');
-      return false;
-    } else if (!aadhaarRegex.test(aadhaar)) {
-      toast.error('Invalid Aadhaar Number (format: 1234 5678 9012)');
-      return false;
-    }
 
     if (!pan.trim()) {
       toast.error('Please enter PAN Number');
@@ -139,19 +112,6 @@ const Billing = () => {
 
         {/* Form Grid Layout */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {/* Aadhaar Number */}
-          <div className="flex flex-col">
-            <label className="text-sm text-gray-600 mb-1">Aadhaar Number</label>
-            <input
-              type="text"
-              name="aadhaar"
-              value={billingData.aadhaar}
-              onChange={handleAadhaarChange}
-              placeholder="Enter Aadhaar Number"
-              className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
-            />
-          </div>
-
           {/* PAN Number */}
           <div className="flex flex-col">
             <label className="text-sm text-gray-600 mb-1">PAN Number</label>
