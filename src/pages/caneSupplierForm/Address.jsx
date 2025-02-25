@@ -23,7 +23,7 @@ const Address = () => {
     { name: 'Hubli', zone: 'Hubli Zone', circle: 'Hubli Circle' },
     { name: 'Dharwad', zone: 'Hubli Zone', circle: 'Hubli Circle' },
   ];
-  const states = ['Karnataka'];
+  const states = ['Karnataka', 'Chennai'];
   const taluks = ['Bangalore South', 'Mysore', 'Hubli', 'Dharwad'];
 
   // Handle input changes
