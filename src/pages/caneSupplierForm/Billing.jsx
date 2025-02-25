@@ -95,7 +95,6 @@ const Billing = () => {
         </button>
         <button
           type="submit"
-          onClick={handleSubmit}
           disabled={loading} // Disable button while loading
           className={`h-[36px] px-5 text-white ${
             loading ? 'bg-gray-400' : 'bg-teal-700'
