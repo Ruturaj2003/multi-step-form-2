@@ -9,6 +9,7 @@ const initialState = {
     middleName: '',
     lastName: '',
     aadhaar: '',
+    pan: '',
     email: '',
     phone: '',
     supplierType: '',
@@ -26,8 +27,6 @@ const initialState = {
     district: '',
   },
   billing: {
-    aadhaar: '',
-    pan: '',
     primaryBank: '',
     primaryAccount: '',
     primaryIfsc: '',

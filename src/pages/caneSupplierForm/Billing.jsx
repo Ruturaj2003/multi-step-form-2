@@ -86,7 +86,6 @@ const Billing = () => {
   // Validation function
   const validateForm = () => {
     const {
-      pan,
       primaryBank,
       primaryAccount,
       primaryIfsc,
@@ -96,17 +95,9 @@ const Billing = () => {
     } = billingData;
 
     // Validation regex
-    const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+
     const accountRegex = /^\d{9,18}$/;
     const ifscRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
-
-    if (!pan.trim()) {
-      toast.error('Please enter PAN Number');
-      return false;
-    } else if (!panRegex.test(pan)) {
-      toast.error('Invalid PAN Number (format: ABCDE1234F)');
-      return false;
-    }
 
     if (!primaryBank.trim()) {
       toast.error('Please enter Primary Bank Name');
@@ -171,20 +162,6 @@ const Billing = () => {
 
           {/* Form Grid Layout */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {/* PAN Number */}
-            <div className="flex flex-col">
-              <label className="text-sm text-gray-700 mb-1">PAN Number</label>
-              <input
-                type="text"
-                name="pan"
-                value={billingData.pan}
-                onChange={handleChange}
-                placeholder="Enter PAN Number"
-                className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
-                required
-              />
-            </div>
-
             {/* Primary Bank Details */}
             <div className="flex flex-col">
               <label className="text-sm text-gray-700 mb-1">

@@ -46,6 +46,7 @@ const General = () => {
       supplierType,
       middleName,
       aadhaar,
+      pan,
     } = personalInfo;
 
     // Name Validation (No numbers or special characters)
@@ -74,6 +75,15 @@ const General = () => {
       return false;
     }
 
+    const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+
+    if (!pan.trim()) {
+      toast.error('Please enter PAN Number');
+      return false;
+    } else if (!panRegex.test(pan)) {
+      toast.error('Invalid PAN Number (format: ABCDE1234F)');
+      return false;
+    }
     // Email Validation (Basic Format)
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(email)) {
@@ -177,6 +187,19 @@ const General = () => {
               onChange={handleAadhaarChange}
               placeholder="Enter Aadhaar Number"
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            />
+          </div>
+          {/* PAN Number */}
+          <div className="flex flex-col">
+            <label className="text-sm text-gray-700 mb-1">PAN Number</label>
+            <input
+              type="text"
+              name="pan"
+              value={personalInfo.pan}
+              onChange={handleChange}
+              placeholder="Enter PAN Number"
+              className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+              required
             />
           </div>
 
