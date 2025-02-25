@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { saveBilling } from '../../redux/caneSupplierSlice';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import { FaEdit, FaCheck, FaTimes } from 'react-icons/fa';
+import { FaEdit, FaCheck, FaTimes, FaTrash } from 'react-icons/fa';
 
 const Billing = () => {
   const navigate = useNavigate();
@@ -118,6 +118,12 @@ const Billing = () => {
     toast.success('Entry updated!');
     setEditingRow(null);
     setEditValues({});
+  };
+
+  // Delete an entry by removing it from the local state
+  const handleDelete = (index) => {
+    setData(data.filter((_, i) => i !== index));
+    toast.success('Entry deleted!');
   };
 
   // Create a new entry by adding it to local state
@@ -260,12 +266,20 @@ const Billing = () => {
                         </button>
                       </div>
                     ) : (
-                      <button
-                        onClick={() => handleEdit(index, item)}
-                        className="text-blue-600 text-xl"
-                      >
-                        <FaEdit />
-                      </button>
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => handleEdit(index, item)}
+                          className="text-blue-600 text-xl"
+                        >
+                          <FaEdit />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(index)}
+                          className="text-red-600 text-xl"
+                        >
+                          <FaTrash />
+                        </button>
+                      </div>
                     )}
                   </td>
                 </tr>
@@ -284,7 +298,6 @@ const Billing = () => {
         >
           View Billing History
         </button>
-
         <button
           type="button"
           onClick={handleSubmit}
