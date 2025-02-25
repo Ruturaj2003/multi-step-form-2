@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const General = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const zones = ['Harvester', 'Farmer', 'Transporter'];
 
   // Get personal info from Redux store
   const personalInfo = useSelector((state) => state.caneSupplier.personalInfo);
@@ -20,7 +21,7 @@ const General = () => {
 
   // Validation function
   const validateForm = () => {
-    const { firstName, lastName, email, phone } = personalInfo;
+    const { firstName, lastName, email, phone, supplierType } = personalInfo;
 
     // Name Validation (No numbers or special characters)
     const nameRegex = /^[A-Za-z\s]+$/;
@@ -47,6 +48,10 @@ const General = () => {
       return false;
     }
 
+    if (!supplierType) {
+      toast.error('Please select a Supplier Type');
+      return false;
+    }
     return true;
   };
 
@@ -86,6 +91,21 @@ const General = () => {
               name="firstName"
               placeholder="Enter First Name"
               value={personalInfo.firstName}
+              onChange={handleChange}
+              className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            />
+          </div>
+          {/* Middle  Name */}
+          <div className="flex flex-col">
+            <label htmlFor="firstName" className="text-sm text-gray-600 mb-1">
+              Middle Name
+            </label>
+            <input
+              type="text"
+              id="middleName"
+              name="middleName"
+              placeholder="Enter First Name"
+              value={personalInfo.middleName}
               onChange={handleChange}
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
             />
@@ -137,6 +157,24 @@ const General = () => {
               onChange={handleChange}
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
             />
+          </div>
+
+          {/* Type of Supplier */}
+          <div className="flex flex-col">
+            <label className="text-sm text-gray-600 mb-1">Supplier Type</label>
+            <select
+              name="supplierType"
+              value={personalInfo.supplierType}
+              onChange={handleChange}
+              className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            >
+              <option value="">Select Supplier Type</option>
+              {zones.map((zone, index) => (
+                <option key={index} value={zone}>
+                  {zone}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
       </div>

@@ -6,9 +6,11 @@ import { nanoid } from 'nanoid';
 const initialState = {
   personalInfo: {
     firstName: '',
+    middleName: '',
     lastName: '',
     email: '',
     phone: '',
+    supplierType: '',
   },
   address: {
     zone: '',
