@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { saveAddress, updateField } from '../../redux/caneSupplierSlice';
@@ -11,18 +11,49 @@ const Address = () => {
   // Get address data from Redux store
   const addressData = useSelector((state) => state.caneSupplier.address);
 
-  // Dropdown options
-  const zones = ['Zone 1', 'Zone 2', 'Zone 3'];
-  const circles = ['Circle A', 'Circle B', 'Circle C'];
-  const villages = ['Village A', 'Village B', 'Village C'];
-  const states = ['State X', 'State Y', 'State Z'];
-  const taluks = ['Taluk 1', 'Taluk 2', 'Taluk 3'];
+  // Dropdown options for Karnataka
+  const zones = ['Bangalore Zone', 'Mysore Zone', 'Hubli Zone'];
+  const circles = ['Bangalore Circle', 'Mysore Circle', 'Hubli Circle'];
+  const villages = [
+    { name: 'Koramangala', zone: 'Bangalore Zone', circle: 'Bangalore Circle' },
+    { name: 'Jayanagar', zone: 'Bangalore Zone', circle: 'Bangalore Circle' },
+    { name: 'Indiranagar', zone: 'Bangalore Zone', circle: 'Bangalore Circle' },
+    { name: 'Mysore', zone: 'Mysore Zone', circle: 'Mysore Circle' },
+    { name: 'Hunsur', zone: 'Mysore Zone', circle: 'Mysore Circle' },
+    { name: 'Hubli', zone: 'Hubli Zone', circle: 'Hubli Circle' },
+    { name: 'Dharwad', zone: 'Hubli Zone', circle: 'Hubli Circle' },
+  ];
+  const states = ['Karnataka'];
+  const taluks = ['Bangalore South', 'Mysore', 'Hubli', 'Dharwad'];
 
   // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     dispatch(updateField({ section: 'address', field: name, value }));
   };
+
+  // Update zone and circle based on selected village
+  useEffect(() => {
+    const selectedVillage = villages.find(
+      (village) => village.name === addressData.village
+    );
+    if (selectedVillage) {
+      dispatch(
+        updateField({
+          section: 'address',
+          field: 'zone',
+          value: selectedVillage.zone,
+        })
+      );
+      dispatch(
+        updateField({
+          section: 'address',
+          field: 'circle',
+          value: selectedVillage.circle,
+        })
+      );
+    }
+  }, [addressData.village, dispatch]);
 
   // Validation
   const validateFormData = () => {
@@ -94,7 +125,7 @@ const Address = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col justify-between bg-white p-6 rounded-lg "
+      className="flex flex-col justify-between bg-white p-6 rounded-lg"
     >
       {/* Header */}
       <h2 className="text-xl font-semibold text-gray-800 mb-6">
@@ -103,6 +134,24 @@ const Address = () => {
 
       {/* Form Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {/* Village */}
+        <div className="flex flex-col">
+          <label className="text-sm text-gray-700 mb-1">Village</label>
+          <select
+            name="village"
+            value={addressData.village}
+            onChange={handleChange}
+            className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+          >
+            <option value="">Select Village</option>
+            {villages.map((village, index) => (
+              <option key={index} value={village.name}>
+                {village.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
         {/* Zone */}
         <div className="flex flex-col">
           <label className="text-sm text-gray-700 mb-1">Zone</label>
@@ -154,9 +203,7 @@ const Address = () => {
 
         {/* Address Line 2 */}
         <div className="flex flex-col">
-          <label class Name="text-sm text-gray-700 mb-1">
-            Address Line 2
-          </label>
+          <label className="text-sm text-gray-700 mb-1">Address Line 2</label>
           <input
             type="text"
             name="addressLine2"
@@ -178,24 +225,6 @@ const Address = () => {
             onChange={handleChange}
             className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
           />
-        </div>
-
-        {/* Village */}
-        <div className="flex flex-col">
-          <label className="text-sm text-gray-700 mb-1">Village</label>
-          <select
-            name="village"
-            value={addressData.village}
-            onChange={handleChange}
-            className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
-          >
-            <option value="">Select Village</option>
-            {villages.map((village, index) => (
-              <option key={index} value={village}>
-                {village}
-              </option>
-            ))}
-          </select>
         </div>
 
         {/* State */}
@@ -256,7 +285,7 @@ const Address = () => {
             placeholder="Enter District"
             value={addressData.district}
             onChange={handleChange}
-            className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+            className="border border-gray-300 rounded-md p-3 focus :outline-none focus:ring-2 focus:ring-teal-500 transition"
           />
         </div>
       </div>
