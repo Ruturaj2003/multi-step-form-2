@@ -64,37 +64,38 @@ const FormLayout = () => {
   };
 
   return (
-    <div className="bg-teal-50 w-screen min-h-screen flex justify-center items-start">
-      <div className="bg-white rounded-3xl shadow-2xl min-w-[70vw] max-w-[85vw] max-h-[90vh] mt-10 p-6 overflow-y-auto">
+    <div className="bg-teal-50 min-h-screen flex justify-center items-start p-4 lg:p-8">
+      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-6xl overflow-hidden">
         {/* Top Bar Container */}
-        <div className="h-20 w-full gap-x-4 bg-teal-700 rounded-t-3xl rounded-b-xl flex justify-between px-4 items-center relative">
+        <div className="bg-teal-700 px-6 py-4 flex items-center justify-between gap-4">
           {/* Navigation Container */}
           <Navbar />
 
           {/* Search Bar */}
-          <div className="relative">
-            <div className="flex items-center bg-white px-3 py-2 rounded-full shadow-md">
-              <IoSearch className="text-teal-700 w-5 h-5" />
+          <div className="flex-1 max-w-xl relative">
+            <div className="flex items-center bg-white px-4 py-3 rounded-full shadow-md transition-all duration-200 focus-within:shadow-lg focus-within:ring-2 ring-teal-200">
+              <IoSearch className="text-teal-700 w-5 h-5 flex-shrink-0" />
               <input
                 type="text"
                 placeholder="Search..."
-                className="ml-2 outline-none bg-transparent text-teal-700 placeholder-teal-400"
+                className="ml-3 w-full outline-none bg-transparent text-teal-900 placeholder-teal-500 text-sm font-medium"
                 value={searchTerm}
                 onChange={handleSearch}
                 onKeyDown={handleKeyDown}
+                aria-label="Search contacts"
               />
             </div>
 
-            {/* Suggestions Dropdown with Fixed Height & Scroll */}
+            {/* Suggestions Dropdown */}
             {suggestions.length > 0 && (
-              <ul className="absolute left-0 mt-1 w-full bg-white border rounded-lg shadow-md z-10 max-h-40 overflow-y-auto">
+              <ul className="absolute left-0 right-0 mt-2 bg-white border border-teal-100 rounded-xl shadow-lg z-10 max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-teal-200">
                 {suggestions.map((name, index) => (
                   <li
                     key={index}
-                    className={`px-4 py-2 cursor-pointer ${
+                    className={`px-4 py-3 cursor-pointer transition-colors duration-150 ${
                       activeIndex === index
-                        ? 'bg-teal-100'
-                        : 'hover:bg-teal-100'
+                        ? 'bg-teal-50 text-teal-900'
+                        : 'hover:bg-teal-50 text-teal-800'
                     }`}
                     onMouseEnter={() => setActiveIndex(index)}
                     onMouseLeave={() => setActiveIndex(-1)}
@@ -104,7 +105,7 @@ const FormLayout = () => {
                       setActiveIndex(-1);
                     }}
                   >
-                    {name}
+                    <span className="block text-sm font-medium">{name}</span>
                   </li>
                 ))}
               </ul>
@@ -112,13 +113,16 @@ const FormLayout = () => {
           </div>
 
           {/* Profile Picture */}
-          <div className="w-16 h-16 bg-white cursor-pointer rounded-full flex items-center justify-center">
-            <IoPersonCircle className="w-14 h-14 text-teal-700 rounded-full" />
-          </div>
+          <button className="flex-shrink-0 hover:opacity-80 transition-opacity duration-200">
+            <span className="sr-only">User profile</span>
+            <IoPersonCircle className="w-12 h-12 text-teal-100" />
+          </button>
         </div>
 
         {/* Form Content */}
-        <Outlet />
+        <div className="p-6 lg:p-8 overflow-y-auto max-h-[75vh]">
+          <Outlet />
+        </div>
       </div>
     </div>
   );
