@@ -148,9 +148,19 @@ const Billing = () => {
     <div className="flex flex-col justify-between bg-white p-6 pt-1 rounded-lg">
       {/* Billing Table */}
       <div className="w-full flex-1">
-        <h2 className="text-xl font-semibold text-gray-800 mb-6">
-          Billing Details
-        </h2>
+        <div className="flex justify-between">
+          <h2 className="text-xl font-semibold text-gray-800 mb-6">
+            Billing Details
+          </h2>
+          <button
+            type="button"
+            onClick={() => setShowCreateModal(true)}
+            className="h-[40px] px-6 text-white bg-teal-600 border border-teal-600 rounded-md hover:bg-teal-500 transition-all"
+          >
+            Create
+          </button>
+        </div>
+
         <div className="overflow-x-auto h-[320px] rounded-lg shadow-lg">
           <table className="min-w-full border border-teal-300 rounded-lg">
             <thead>
@@ -274,13 +284,7 @@ const Billing = () => {
         >
           View Billing History
         </button>
-        <button
-          type="button"
-          onClick={() => setShowCreateModal(true)}
-          className="h-[40px] px-6 text-white bg-teal-600 border border-teal-600 rounded-md hover:bg-teal-500 transition-all"
-        >
-          Create
-        </button>
+
         <button
           type="button"
           onClick={handleSubmit}
