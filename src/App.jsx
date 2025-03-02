@@ -12,6 +12,7 @@ import {
   Output,
   TripAndRemarks,
 } from './pages/caneTripForm';
+import CaneTripForm from './pages/caneTripForm/CaneTripForm';
 
 export const BASE_URL = 'http://localhost:8087/';
 function App() {
@@ -30,7 +31,7 @@ function App() {
         </Route>
 
         {/* Cane Trip Form */}
-        <Route path="/cane-trip" element={<CaneTripLayout />}>
+        <Route path="/cane-trip" element={<CaneTripForm />}>
           <Route index element={<BasicDetails />} />
           <Route path="caneAndPlotInfo" element={<CaneAndPlotInfo />} />
           <Route path="locationAndVehicle" element={<LocationAndVehicle />} />
