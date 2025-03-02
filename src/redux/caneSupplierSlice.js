@@ -26,7 +26,86 @@ const initialState = {
     taluk: '',
     district: '',
   },
-  billing: {},
+  billing: {
+    data: [
+      {
+        accountNo: '123456789',
+        ifsc: 'ABCD0123456',
+        bankName: 'Bank of India',
+        isPrimary: true,
+        isEditing: false,
+      },
+      {
+        accountNo: '987654321',
+        ifsc: 'EFGH0123456',
+        bankName: 'State Bank of India',
+        isPrimary: false,
+        isEditing: false,
+      },
+      {
+        accountNo: '456789123',
+        ifsc: 'IJKL0123456',
+        bankName: 'HDFC Bank',
+        isPrimary: false,
+        isEditing: false,
+      },
+      {
+        accountNo: '321654987',
+        ifsc: 'MNOP0123456',
+        bankName: 'ICICI Bank',
+        isPrimary: false,
+        isEditing: false,
+      },
+      {
+        accountNo: '789123456',
+        ifsc: 'QRST0123456',
+        bankName: 'Axis Bank',
+        isPrimary: false,
+        isEditing: false,
+      },
+      {
+        accountNo: '654321789',
+        ifsc: 'UVWX0123456',
+        bankName: 'Punjab National Bank',
+        isPrimary: false,
+        isEditing: false,
+      },
+      {
+        accountNo: '159753486',
+        ifsc: 'YZAB0123456',
+        bankName: 'Bank of Baroda',
+        isPrimary: false,
+        isEditing: false,
+      },
+      {
+        accountNo: '753159852',
+        ifsc: 'CDEF0123456',
+        bankName: 'Canara Bank',
+        isPrimary: false,
+        isEditing: false,
+      },
+    ],
+    history: [
+      {
+        date: '2023-01-15',
+        accountNo: '123456789',
+        ifsc: 'ABCD0123456',
+        amount: '5000',
+      },
+      {
+        date: '2023-02-20',
+        accountNo: '987654321',
+        ifsc: 'EFGH0123456',
+        amount: '7500',
+      },
+      {
+        date: '2023-03-10',
+        accountNo: '456789123',
+        ifsc: 'IJKL0123456',
+        amount: '3000',
+      },
+    ],
+  },
   supplierId: null, // Set after personal details are saved
   addressId: null, // Set after address is saved
   billingId: null, // Set after billing is saved
@@ -152,8 +231,7 @@ export const saveBilling = createAsyncThunk(
       url = `${BASE_URL}supplier/${supplierId}/billing/${billingId}`;
       method = 'PUT';
     } else {
-      // First-time submission: assign billingId equal to supplierId and POST request
-      // payload.billingId = supplierId;
+      // First-time submission: POST request
       url = `${BASE_URL}supplier/${supplierId}/billing`;
       method = 'POST';
     }
@@ -185,7 +263,57 @@ const caneSupplierSlice = createSlice({
   reducers: {
     updateField: (state, action) => {
       const { section, field, value } = action.payload;
-      state[section][field] = value;
+      if (section === 'billing') {
+        if (field === 'data' || field === 'history') {
+          state.billing[field] = value;
+        } else {
+          state.billing[field] = value;
+        }
+      } else {
+        state[section][field] = value;
+      }
+    },
+    setPrimary: (state, action) => {
+      const index = action.payload;
+      state.billing.data = state.billing.data.map((item, i) => ({
+        ...item,
+        isPrimary: i === index,
+      }));
+    },
+    editRow: (state, action) => {
+      const { index, item } = action.payload;
+      state.billing.data = state.billing.data.map((row, i) => {
+        if (i === index) {
+          return { ...row, isEditing: true };
+        }
+        return { ...row, isEditing: false };
+      });
+      state.editingRow = index;
+      state.editValues = item;
+    },
+    cancelEdit: (state) => {
+      state.billing.data = state.billing.data.map((row) => ({
+        ...row,
+        isEditing: false,
+      }));
+      state.editingRow = null;
+      state.editValues = {};
+    },
+    saveEdit: (state, action) => {
+      const index = action.payload;
+      state.billing.data = state.billing.data.map((item, i) =>
+        i === index ? { ...state.editValues } : item
+      );
+      state.editingRow = null;
+      state.editValues = {};
+    },
+    deleteRow: (state, action) => {
+      const index = action.payload;
+      state.billing.data = state.billing.data.filter((_, i) => i !== index);
+    },
+    createRow: (state, action) => {
+      const newRow = action.payload;
+      state.billing.data = [...state.billing.data, newRow];
     },
     resetForm: () => initialState,
   },
@@ -209,5 +337,14 @@ const caneSupplierSlice = createSlice({
   },
 });
 
-export const { updateField, resetForm } = caneSupplierSlice.actions;
+export const {
+  updateField,
+  setPrimary,
+  editRow,
+  cancelEdit,
+  saveEdit,
+  deleteRow,
+  createRow,
+  resetForm,
+} = caneSupplierSlice.actions;
 export default caneSupplierSlice.reducer;

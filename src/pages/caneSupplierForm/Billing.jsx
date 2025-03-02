@@ -3,64 +3,16 @@ import { saveBilling } from '../../redux/caneSupplierSlice';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { FaEdit, FaCheck, FaTimes, FaTrash } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 
 const Billing = () => {
   const navigate = useNavigate();
-
-  // Initial billing data for demo purposes
-  const initialBillingData = [
-    {
-      accountNo: '123456789',
-      ifsc: 'ABCD0123456',
-      bankName: 'Bank of India',
-      isPrimary: true,
-    },
-    {
-      accountNo: '987654321',
-      ifsc: 'EFGH0123456',
-      bankName: 'State Bank of India',
-      isPrimary: false,
-    },
-    {
-      accountNo: '456789123',
-      ifsc: 'IJKL0123456',
-      bankName: 'HDFC Bank',
-      isPrimary: false,
-    },
-    {
-      accountNo: '321654987',
-      ifsc: 'MNOP0123456',
-      bankName: 'ICICI Bank',
-      isPrimary: false,
-    },
-    {
-      accountNo: '789123456',
-      ifsc: 'QRST0123456',
-      bankName: 'Axis Bank',
-      isPrimary: false,
-    },
-    {
-      accountNo: '654321789',
-      ifsc: 'UVWX0123456',
-      bankName: 'Punjab National Bank',
-      isPrimary: false,
-    },
-    {
-      accountNo: '159753486',
-      ifsc: 'YZAB0123456',
-      bankName: 'Bank of Baroda',
-      isPrimary: false,
-    },
-    {
-      accountNo: '753159852',
-      ifsc: 'CDEF0123456',
-      bankName: 'Canara Bank',
-      isPrimary: false,
-    },
-  ];
+  const { data, history: billingHistory } = useSelector(
+    (state) => state.caneSupplier.billing
+  );
 
   // Local state for billing data
-  const [data, setData] = useState(initialBillingData);
+
   const [loading, setLoading] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -71,28 +23,6 @@ const Billing = () => {
   });
   const [editingRow, setEditingRow] = useState(null);
   const [editValues, setEditValues] = useState({});
-
-  // Dummy billing history data for the history modal
-  const billingHistory = [
-    {
-      date: '2023-01-15',
-      accountNo: '123456789',
-      ifsc: 'ABCD0123456',
-      amount: '5000',
-    },
-    {
-      date: '2023-02-20',
-      accountNo: '987654321',
-      ifsc: 'EFGH0123456',
-      amount: '7500',
-    },
-    {
-      date: '2023-03-10',
-      accountNo: '456789123',
-      ifsc: 'IJKL0123456',
-      amount: '3000',
-    },
-  ];
 
   // Set a row as primary; only one row can be primary at a time.
   const handlePrimaryChange = (index) => {
