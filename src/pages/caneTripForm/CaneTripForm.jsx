@@ -1,57 +1,92 @@
 import React, { useState } from 'react';
 
+const InputField = ({ label, type, value, onChange }) => (
+  <div className="flex flex-col space-y-1">
+    <label className="text-sm font-medium text-gray-700">{label}</label>
+    <input
+      type={type}
+      value={value}
+      onChange={onChange}
+      className="w-full border border-teal-700 rounded p-1 text-sm"
+    />
+  </div>
+);
+
+const Section = ({ title, fields, sectionKey, handleChange }) => (
+  <div className="border border-teal-700/40 bg-white rounded p-4 flex flex-col space-y-2">
+    <h3 className="text-teal-700 font-semibold text-center text-base mb-2">
+      {title}
+    </h3>
+    <div className="grid grid-cols-2 gap-3">
+      {Object.entries(fields).map(([field, value]) => (
+        <InputField
+          key={field}
+          label={field.replace(/([A-Z])/g, ' $1').trim()}
+          type={
+            ['date', 'datetime-local', 'number'].includes(field)
+              ? field
+              : 'text'
+          }
+          value={value}
+          onChange={(e) => handleChange(sectionKey, field, e.target.value)}
+        />
+      ))}
+    </div>
+  </div>
+);
+
 export default function CaneForm() {
   const [formData, setFormData] = useState({
-    basicDetails: {
-      slipNo: '',
-      date: '',
-      tokenNo: '',
-      entryNo: '',
-      orderNo: '',
-      caneSupplier: '',
-      lastTokenNo: '',
+    BasicDetails: {
+      SlipNo: '',
+      Date: '',
+      TokenNo: '',
+      EntryNo: '',
+      OrderNo: '',
+      CaneSupplier: '',
+      LastTokenNo: '',
     },
-    caneAndPlotInfo: {
-      plotNo: '',
-      surveyNo: '',
-      plantArea: '',
-      cropType: '',
-      caneVariety: '',
-      waterSrc: '',
-      distance: '',
+    CaneAndPlotInfo: {
+      PlotNo: '',
+      SurveyNo: '',
+      PlantArea: '',
+      CropType: '',
+      CaneVariety: '',
+      WaterSrc: '',
+      Distance: '',
     },
-    locationAndVehicle: {
-      caneVillage: '',
-      vehicleType: '',
-      harvestor: '',
-      vehicleNo: '',
-      transporter: '',
-      driverName: '',
+    LocationAndVehicle: {
+      CaneVillage: '',
+      VehicleType: '',
+      Harvestor: '',
+      VehicleNo: '',
+      Transporter: '',
+      DriverName: '',
     },
-    caneWeight: {
-      caneType: '',
-      loadWeight: '',
-      tareWeight: '',
-      bindingWeight: '',
-      netWeight: '',
+    CaneWeight: {
+      CaneType: '',
+      LoadWeight: '',
+      TareWeight: '',
+      BindingWeight: '',
+      NetWeight: '',
     },
-    deduction: {
-      tonnageDeduction: '',
-      deductionWeight: '',
-      deductionSupplier: '',
-      deductionHarvestor: '',
-      deductionTransporter: '',
+    Deduction: {
+      TonnageDeduction: '',
+      DeductionWeight: '',
+      DeductionSupplier: '',
+      DeductionHarvestor: '',
+      DeductionTransporter: '',
     },
-    tripAndRemarks: {
-      tareWtDateTime: '',
-      trips: '',
-      remarks: '',
-      securityNo: '',
+    TripAndRemarks: {
+      TareWtDateTime: '',
+      Trips: '',
+      Remarks: '',
+      SecurityNo: '',
     },
-    output: {
-      totalMemberWeight: '',
-      totalHarvestWeight: '',
-      totalTransportWeight: '',
+    Output: {
+      TotalMemberWeight: '',
+      TotalHarvestWeight: '',
+      TotalTransportWeight: '',
     },
   });
 
@@ -66,43 +101,23 @@ export default function CaneForm() {
   };
 
   return (
-    <div className="w-screen h-screen p-6 bg-teal-50 flex flex-col overflow-hidden">
-      <h2 className="text-lg font-bold text-teal-700 text-center mb-2">
-        Cane Form
-      </h2>
-      <div className="flex-1  grid grid-cols-4 gap-2 overflow-auto">
+    <div className="w-screen h-screen p-6 bg-teal-50 flex flex-col space-y-4 overflow-hidden">
+      <h2 className="text-xl font-bold text-teal-700 text-center">Cane Form</h2>
+      <div className="grid grid-cols-4 gap-4 flex-1">
         {Object.entries(formData).map(([section, fields]) => (
-          <div
+          <Section
             key={section}
-            className="border border-teal-700/40 bg-white rounded p-2 flex flex-col"
-          >
-            <h3 className="text-teal-700 font-semibold text-center text-xs mb-1">
-              {section.replace(/([A-Z])/g, ' $1').trim()}
-            </h3>
-            <div className="grid grid-cols-2 gap-2 flex-1">
-              {Object.entries(fields).map(([field, value]) => (
-                <div key={field}>
-                  <label className="block text-[0.7rem] font-medium text-gray-700">
-                    {field.replace(/([A-Z])/g, ' $1').trim()}
-                  </label>
-                  <input
-                    type="text"
-                    value={value}
-                    onChange={(e) =>
-                      handleChange(section, field, e.target.value)
-                    }
-                    className="w-full border border-teal-700 rounded p-1 text-[0.7rem]"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
+            title={section.replace(/([A-Z])/g, ' $1').trim()}
+            fields={fields}
+            sectionKey={section}
+            handleChange={handleChange}
+          />
         ))}
-        <div className="text-left ml-14  mt-16">
-          <button className="bg-teal-700 h-10 w-16 hover:bg-teal-800 text-white py-1 px-3 rounded shadow text-xs">
-            Submit
-          </button>
-        </div>
+      </div>
+      <div className="text-center">
+        <button className="bg-teal-700 hover:bg-teal-800 text-white py-2 px-6 rounded shadow-md text-sm">
+          Submit
+        </button>
       </div>
     </div>
   );
