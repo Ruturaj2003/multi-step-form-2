@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { BASE_URL } from '../../App';
+import { toast } from 'react-toastify';
 
 const InputField = ({ label, type, value, onChange }) => (
   <div className="flex flex-col space-y-1">
@@ -18,19 +20,40 @@ const Section = ({ title, fields, sectionKey, handleChange }) => (
       {title}
     </h3>
     <div className="grid grid-cols-2 gap-3">
-      {Object.entries(fields).map(([field, value]) => (
-        <InputField
-          key={field}
-          label={field.replace(/([A-Z])/g, ' $1').trim()}
-          type={
-            ['date', 'datetime-local', 'number'].includes(field)
-              ? field
-              : 'text'
-          }
-          value={value}
-          onChange={(e) => handleChange(sectionKey, field, e.target.value)}
-        />
-      ))}
+      {Object.entries(fields).map(([field, value]) => {
+        let inputType = 'text'; // Default type
+
+        if (['Date'].includes(field)) {
+          inputType = 'date';
+        } else if (['TareWtDateTime'].includes(field)) {
+          inputType = 'datetime-local';
+        } else if (
+          [
+            'LoadWeight',
+            'TareWeight',
+            'BindingWeight',
+            'NetWeight',
+            'TonnageDeduction',
+            'DeductionWeight',
+            'Trips',
+            'TotalMemberWeight',
+            'TotalHarvestWeight',
+            'TotalTransportWeight',
+          ].includes(field)
+        ) {
+          inputType = 'number';
+        }
+
+        return (
+          <InputField
+            key={field}
+            label={field.replace(/([A-Z])/g, ' $1').trim()}
+            type={inputType}
+            value={value}
+            onChange={(e) => handleChange(sectionKey, field, e.target.value)}
+          />
+        );
+      })}
     </div>
   </div>
 );
@@ -100,6 +123,29 @@ export default function CaneForm() {
     }));
   };
 
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch(BASE_URL + '', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit data');
+      }
+
+      const data = await response.json();
+      toast.success('Form submitted successfully!');
+      console.log(formData);
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Failed to submit the form.');
+    }
+  };
+
   return (
     <div className="w-screen h-screen p-6 bg-teal-50 flex flex-col space-y-4 overflow-hidden">
       <h2 className="text-xl font-bold text-teal-700 text-center">Cane Form</h2>
@@ -115,7 +161,10 @@ export default function CaneForm() {
         ))}
       </div>
       <div className="text-center">
-        <button className="bg-teal-700 hover:bg-teal-800 text-white py-2 px-6 rounded shadow-md text-sm">
+        <button
+          onClick={handleSubmit}
+          className="bg-teal-700 hover:bg-teal-800 text-white py-2 px-6 rounded shadow-md text-sm"
+        >
           Submit
         </button>
       </div>
