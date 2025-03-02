@@ -1,16 +1,20 @@
 import { useNavigate } from 'react-router-dom';
-import { saveBilling } from '../../redux/caneSupplierSlice';
+import {
+  createRow,
+  saveBilling,
+  setPrimary,
+} from '../../redux/caneSupplierSlice';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { FaEdit, FaCheck, FaTimes, FaTrash } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Billing = () => {
   const navigate = useNavigate();
   const { data, history: billingHistory } = useSelector(
     (state) => state.caneSupplier.billing
   );
-
+  const dispatch = useDispatch();
   // Local state for billing data
 
   const [loading, setLoading] = useState(false);
@@ -26,7 +30,7 @@ const Billing = () => {
 
   // Set a row as primary; only one row can be primary at a time.
   const handlePrimaryChange = (index) => {
-    setData(data.map((item, i) => ({ ...item, isPrimary: i === index })));
+    dispatch(setPrimary(index));
     toast.success('Primary updated!');
   };
 
@@ -57,11 +61,11 @@ const Billing = () => {
   };
 
   // Create a new entry by adding it to local state
-  const handleCreate = () => {
-    setData([...data, { ...newEntry, isPrimary: false }]);
-    toast.success('New entry created!');
-    setShowCreateModal(false);
+  const handleCreate = (event) => {
+    event.preventDefault(); // Prevent the default form submission behavior
+    dispatch(createRow(newEntry));
     setNewEntry({ accountNo: '', ifsc: '', bankName: '' });
+    setShowCreateModal(false);
   };
 
   // Save all billing data (simulate saving via a Redux action)
