@@ -4,6 +4,7 @@ import {
   saveBilling,
   setPrimary,
   deleteRow,
+  saveEdit,
 } from '../../redux/caneSupplierSlice';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
@@ -43,6 +44,12 @@ const Billing = () => {
     setShowCreateModal(false);
   };
 
+  // Delete an entry by removing it from the local state
+  const handleDelete = (index) => {
+    dispatch(deleteRow(index));
+    toast.success('Entry deleted!');
+  };
+
   // Begin editing a row
   const handleEdit = (index, item) => {
     setEditingRow(index);
@@ -57,16 +64,12 @@ const Billing = () => {
 
   // Save the edited row by updating the local state
   const handleSaveEdit = (index) => {
-    setData(data.map((item, i) => (i === index ? { ...editValues } : item)));
+    console.log(editValues);
+
+    dispatch(saveEdit({ index, editValues }));
     toast.success('Entry updated!');
     setEditingRow(null);
     setEditValues({});
-  };
-
-  // Delete an entry by removing it from the local state
-  const handleDelete = (index) => {
-    dispatch(deleteRow(index));
-    toast.success('Entry deleted!');
   };
 
   // Save all billing data (simulate saving via a Redux action)

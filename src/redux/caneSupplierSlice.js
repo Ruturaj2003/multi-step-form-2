@@ -302,12 +302,13 @@ const caneSupplierSlice = createSlice({
       state.editValues = {};
     },
     saveEdit: (state, action) => {
-      const index = action.payload;
-      state.billing.data = state.billing.data.map((item, i) =>
-        i === index ? { ...state.editValues } : item
-      );
-      state.editingRow = null;
-      state.editValues = {};
+      const { index, editValues } = action.payload;
+
+      if (index !== null && editValues) {
+        state.billing.data = state.billing.data.map((item, i) =>
+          i === index ? { ...item, ...editValues } : item
+        );
+      }
     },
     deleteRow: (state, action) => {
       const index = action.payload;
