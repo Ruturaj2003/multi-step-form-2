@@ -3,6 +3,7 @@ import {
   createRow,
   saveBilling,
   setPrimary,
+  deleteRow,
 } from '../../redux/caneSupplierSlice';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
@@ -34,6 +35,14 @@ const Billing = () => {
     toast.success('Primary updated!');
   };
 
+  // Create a new entry by adding it to local state
+  const handleCreate = (event) => {
+    event.preventDefault(); // Prevent the default form submission behavior
+    dispatch(createRow(newEntry));
+    setNewEntry({ accountNo: '', ifsc: '', bankName: '' });
+    setShowCreateModal(false);
+  };
+
   // Begin editing a row
   const handleEdit = (index, item) => {
     setEditingRow(index);
@@ -56,16 +65,8 @@ const Billing = () => {
 
   // Delete an entry by removing it from the local state
   const handleDelete = (index) => {
-    setData(data.filter((_, i) => i !== index));
+    dispatch(deleteRow(index));
     toast.success('Entry deleted!');
-  };
-
-  // Create a new entry by adding it to local state
-  const handleCreate = (event) => {
-    event.preventDefault(); // Prevent the default form submission behavior
-    dispatch(createRow(newEntry));
-    setNewEntry({ accountNo: '', ifsc: '', bankName: '' });
-    setShowCreateModal(false);
   };
 
   // Save all billing data (simulate saving via a Redux action)
