@@ -2,26 +2,29 @@ import React, { useState } from 'react';
 import { BASE_URL } from '../../App';
 import { toast } from 'react-toastify';
 
-const InputField = ({ label, type, value, onChange }) => (
+const InputField = ({ label, type, value, onChange, error }) => (
   <div className="flex flex-col space-y-1">
     <label className="text-sm font-medium text-gray-700">{label}</label>
     <input
       type={type}
       value={value}
       onChange={onChange}
-      className="w-full border border-teal-700 rounded p-1 text-sm"
+      className={`w-full border rounded p-1 text-sm ${
+        error ? 'border-red-500' : 'border-teal-700'
+      }`}
     />
+    {error && <span className="text-red-500 text-xs">{error}</span>}
   </div>
 );
 
-const Section = ({ title, fields, sectionKey, handleChange }) => (
+const Section = ({ title, fields, sectionKey, handleChange, errors }) => (
   <div className="border border-teal-700/40 bg-white rounded p-4 flex flex-col space-y-2">
     <h3 className="text-teal-700 font-semibold text-center text-base mb-2">
       {title}
     </h3>
     <div className="grid grid-cols-2 gap-3">
       {Object.entries(fields).map(([field, value]) => {
-        let inputType = 'text'; // Default type
+        let inputType = 'text';
 
         if (['Date'].includes(field)) {
           inputType = 'date';
@@ -51,6 +54,7 @@ const Section = ({ title, fields, sectionKey, handleChange }) => (
             type={inputType}
             value={value}
             onChange={(e) => handleChange(sectionKey, field, e.target.value)}
+            error={errors[sectionKey]?.[field]}
           />
         );
       })}
@@ -113,6 +117,8 @@ export default function CaneForm() {
     },
   });
 
+  const [errors, setErrors] = useState({});
+
   const handleChange = (section, field, value) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -123,9 +129,48 @@ export default function CaneForm() {
     }));
   };
 
+  const validateForm = () => {
+    let newErrors = {};
+
+    Object.entries(formData).forEach(([section, fields]) => {
+      newErrors[section] = {};
+      Object.entries(fields).forEach(([field, value]) => {
+        if (!value) {
+          newErrors[section][field] = 'This field is required';
+        } else if (
+          [
+            'LoadWeight',
+            'TareWeight',
+            'BindingWeight',
+            'NetWeight',
+            'TonnageDeduction',
+            'DeductionWeight',
+            'Trips',
+            'TotalMemberWeight',
+            'TotalHarvestWeight',
+            'TotalTransportWeight',
+          ].includes(field) &&
+          (isNaN(value) || value < 0)
+        ) {
+          newErrors[section][field] = 'Enter a valid positive number';
+        }
+      });
+    });
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).every(
+      (section) => Object.keys(newErrors[section]).length === 0
+    );
+  };
+
   const handleSubmit = async () => {
+    if (!validateForm()) {
+      toast.error('Please Fill the Required Fields  before submitting.');
+      return;
+    }
+
     try {
-      const response = await fetch(BASE_URL + '', {
+      const response = await fetch(BASE_URL + '/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -137,7 +182,6 @@ export default function CaneForm() {
         throw new Error('Failed to submit data');
       }
 
-      const data = await response.json();
       toast.success('Form submitted successfully!');
       console.log(formData);
     } catch (error) {
@@ -157,6 +201,7 @@ export default function CaneForm() {
             fields={fields}
             sectionKey={section}
             handleChange={handleChange}
+            errors={errors}
           />
         ))}
       </div>
