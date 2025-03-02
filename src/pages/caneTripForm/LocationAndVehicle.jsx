@@ -1,45 +1,29 @@
-import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateField } from '../../redux/caneTripSlice';
 
 const LocationAndVehicle = () => {
-  // State for form fields
-  const [formData, setFormData] = useState({
-    caneVillage: '',
-    vehicleType: '',
-    harvestor: '',
-    vehicleNo: '',
-    transporter: '',
-    driverName: '',
-  });
+  const dispatch = useDispatch();
 
-  // Handle Input Change
+  // Get location and vehicle data from Redux store
+  const locationAndVehicle = useSelector(
+    (state) => state.caneTrip.locationAndVehicle
+  );
+
+  // Handle input change and update Redux store
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  // Handle Form Submit
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch('https://api.example.com/location-vehicle', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        alert('Data saved successfully!');
-      } else {
-        alert('Failed to save data!');
-      }
-    } catch (error) {
-      alert('An error occurred while saving data.');
-    }
+    dispatch(
+      updateField({
+        section: 'locationAndVehicle',
+        field: e.target.name,
+        value: e.target.value,
+      })
+    );
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="p-6 bg-white">
       <h2 className="text-lg font-semibold mb-4">Location and Vehicle</h2>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Cane Village */}
         <div className="flex flex-col">
@@ -47,7 +31,7 @@ const LocationAndVehicle = () => {
           <input
             type="text"
             name="caneVillage"
-            value={formData.caneVillage}
+            value={locationAndVehicle.caneVillage}
             onChange={handleChange}
             placeholder="Enter Cane Village"
             className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -60,22 +44,22 @@ const LocationAndVehicle = () => {
           <input
             type="text"
             name="vehicleType"
-            value={formData.vehicleType}
+            value={locationAndVehicle.vehicleType}
             onChange={handleChange}
             placeholder="Enter Vehicle Type"
             className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
           />
         </div>
 
-        {/* Harvestor */}
+        {/* Harvester */}
         <div className="flex flex-col">
-          <label className="text-sm">Harvestor</label>
+          <label className="text-sm">Harvester</label>
           <input
             type="text"
             name="harvestor"
-            value={formData.harvestor}
+            value={locationAndVehicle.harvestor}
             onChange={handleChange}
-            placeholder="Enter Harvestor"
+            placeholder="Enter Harvester"
             className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
           />
         </div>
@@ -86,7 +70,7 @@ const LocationAndVehicle = () => {
           <input
             type="text"
             name="vehicleNo"
-            value={formData.vehicleNo}
+            value={locationAndVehicle.vehicleNo}
             onChange={handleChange}
             placeholder="Enter Vehicle No"
             className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -99,7 +83,7 @@ const LocationAndVehicle = () => {
           <input
             type="text"
             name="transporter"
-            value={formData.transporter}
+            value={locationAndVehicle.transporter}
             onChange={handleChange}
             placeholder="Enter Transporter"
             className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -112,7 +96,7 @@ const LocationAndVehicle = () => {
           <input
             type="text"
             name="driverName"
-            value={formData.driverName}
+            value={locationAndVehicle.driverName}
             onChange={handleChange}
             placeholder="Enter Driver Name"
             className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"

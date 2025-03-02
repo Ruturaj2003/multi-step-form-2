@@ -1,46 +1,27 @@
-import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateField } from '../../redux/caneTripSlice';
 
 const BasicDetailsForm = () => {
-  // State for form fields
-  const [formData, setFormData] = useState({
-    slipNo: '',
-    date: '',
-    tokenNo: '',
-    entryNo: '',
-    orderNo: '',
-    caneSupplier: '',
-    lastTokenNo: '',
-  });
+  const dispatch = useDispatch();
 
-  // Handle Input Change
+  // Get basic details data from Redux store
+  const basicDetails = useSelector((state) => state.caneTrip.basicDetails);
+
+  // Handle input change and update Redux store
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  // Handle Form Submit
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch('https://api.example.com/basic-details', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        alert('Data saved successfully!');
-      } else {
-        alert('Failed to save data!');
-      }
-    } catch (error) {
-      alert('An error occurred while saving data.');
-    }
+    dispatch(
+      updateField({
+        section: 'basicDetails',
+        field: e.target.name,
+        value: e.target.value,
+      })
+    );
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="p-6 bg-white">
       <h2 className="text-lg font-semibold mb-4">Basic Details</h2>
+
       <div className="grid grid-cols-2 gap-4">
         {/* Slip No */}
         <div className="flex flex-col">
@@ -48,7 +29,7 @@ const BasicDetailsForm = () => {
           <input
             type="text"
             name="slipNo"
-            value={formData.slipNo}
+            value={basicDetails.slipNo}
             onChange={handleChange}
             placeholder="Enter Slip No"
             className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -61,7 +42,7 @@ const BasicDetailsForm = () => {
           <input
             type="date"
             name="date"
-            value={formData.date}
+            value={basicDetails.date}
             onChange={handleChange}
             className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
           />
@@ -73,7 +54,7 @@ const BasicDetailsForm = () => {
           <input
             type="text"
             name="tokenNo"
-            value={formData.tokenNo}
+            value={basicDetails.tokenNo}
             onChange={handleChange}
             placeholder="Enter Token No"
             className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -86,7 +67,7 @@ const BasicDetailsForm = () => {
           <input
             type="text"
             name="entryNo"
-            value={formData.entryNo}
+            value={basicDetails.entryNo}
             onChange={handleChange}
             placeholder="Enter Entry No"
             className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -99,7 +80,7 @@ const BasicDetailsForm = () => {
           <input
             type="text"
             name="orderNo"
-            value={formData.orderNo}
+            value={basicDetails.orderNo}
             onChange={handleChange}
             placeholder="Enter Order No"
             className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -112,7 +93,7 @@ const BasicDetailsForm = () => {
           <input
             type="text"
             name="caneSupplier"
-            value={formData.caneSupplier}
+            value={basicDetails.caneSupplier}
             onChange={handleChange}
             placeholder="Enter Cane Supplier"
             className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -125,7 +106,7 @@ const BasicDetailsForm = () => {
           <input
             type="text"
             name="lastTokenNo"
-            value={formData.lastTokenNo}
+            value={basicDetails.lastTokenNo}
             onChange={handleChange}
             placeholder="Enter Last Token No"
             className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -133,7 +114,7 @@ const BasicDetailsForm = () => {
         </div>
       </div>
 
-      {/* Submit Button */}
+      {/* Save Button */}
       <div className="flex justify-end items-center p-4">
         <button
           type="submit"

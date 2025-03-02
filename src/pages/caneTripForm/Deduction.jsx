@@ -1,45 +1,49 @@
-import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateField } from '../../redux/caneTripSlice';
 
 const Deduction = () => {
-  // State for form fields
-  const [formData, setFormData] = useState({
-    tonnageDeduction: '',
-    deductionPercentage: '',
-    deductionSupplier: '',
-    deductionHarvestor: '',
-    deductionTransporter: '',
-    deductionWeight: '',
-  });
+  const dispatch = useDispatch();
 
-  // Handle Input Change
+  // Get deduction data from Redux store
+  const deduction = useSelector((state) => state.caneTrip.deduction);
+
+  // Handle input change and update Redux store
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+    const { name, value } = e.target;
+    dispatch(
+      updateField({
+        section: 'deduction',
+        field: name,
+        value: value,
+      })
+    );
 
-  // Handle Form Submit
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    // Auto-calculate Deduction Weight if relevant fields are updated
+    if (['tonnageDeduction', 'deductionPercentage'].includes(name)) {
+      const tonnageDeduction =
+        parseFloat(
+          name === 'tonnageDeduction' ? value : deduction.tonnageDeduction
+        ) || 0;
+      const deductionPercentage =
+        parseFloat(
+          name === 'deductionPercentage' ? value : deduction.deductionPercentage
+        ) || 0;
 
-    try {
-      const response = await fetch('https://api.example.com/deduction', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        alert('Data saved successfully!');
-      } else {
-        alert('Failed to save data!');
-      }
-    } catch (error) {
-      alert('An error occurred while saving data.');
+      const deductionWeight = (tonnageDeduction * deductionPercentage) / 100;
+      dispatch(
+        updateField({
+          section: 'deduction',
+          field: 'deductionWeight',
+          value: deductionWeight.toFixed(2),
+        })
+      );
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="p-6 bg-white">
       <h2 className="text-lg font-semibold mb-4">Deduction Section</h2>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Tonnage Deduction */}
         <div className="flex flex-col">
@@ -47,7 +51,7 @@ const Deduction = () => {
           <input
             type="number"
             name="tonnageDeduction"
-            value={formData.tonnageDeduction}
+            value={deduction.tonnageDeduction}
             onChange={handleChange}
             placeholder="Enter Tonnage Deduction"
             className="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -60,7 +64,7 @@ const Deduction = () => {
           <input
             type="number"
             name="deductionPercentage"
-            value={formData.deductionPercentage}
+            value={deduction.deductionPercentage}
             onChange={handleChange}
             placeholder="Enter % Deduction Weight"
             className="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -73,7 +77,7 @@ const Deduction = () => {
           <input
             type="text"
             name="deductionSupplier"
-            value={formData.deductionSupplier}
+            value={deduction.deductionSupplier}
             onChange={handleChange}
             placeholder="Enter Deduction Supplier"
             className="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -86,7 +90,7 @@ const Deduction = () => {
           <input
             type="text"
             name="deductionHarvestor"
-            value={formData.deductionHarvestor}
+            value={deduction.deductionHarvestor}
             onChange={handleChange}
             placeholder="Enter Deduction Harvestor"
             className="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -99,23 +103,23 @@ const Deduction = () => {
           <input
             type="text"
             name="deductionTransporter"
-            value={formData.deductionTransporter}
+            value={deduction.deductionTransporter}
             onChange={handleChange}
             placeholder="Enter Deduction Transporter"
             className="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
           />
         </div>
 
-        {/* Deduction Weight */}
+        {/* Deduction Weight (Auto-calculated) */}
         <div className="flex flex-col">
           <label className="text-sm">Deduction Weight</label>
           <input
             type="number"
             name="deductionWeight"
-            value={formData.deductionWeight}
-            onChange={handleChange}
-            placeholder="Enter Deduction Weight"
-            className="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            value={deduction.deductionWeight}
+            readOnly
+            placeholder="Auto-calculated"
+            className="border rounded p-2 bg-gray-200 focus:outline-none focus:ring-2 focus:ring-teal-500"
           />
         </div>
       </div>

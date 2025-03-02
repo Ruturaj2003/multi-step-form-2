@@ -59,7 +59,7 @@ const Navbar = () => {
 
   return (
     <div className="w-full">
-      <div className="bg-teal-100 rounded-lg p-1 flex flex-wrap md:grid md:grid-cols-4 lg:flex lg:flex-nowrap gap-2">
+      <div className="bg-teal-50 rounded-lg p-1 flex flex-wrap md:grid md:grid-cols-4 lg:flex lg:flex-nowrap gap-2">
         {steps.map((step, index) => (
           <Link key={index} to={step.path} className={getLinkClass(step.path)}>
             {step.icon}

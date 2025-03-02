@@ -1,46 +1,29 @@
-import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateField } from '../../redux/caneTripSlice';
 
 const CaneAndPlotInfo = () => {
-  // State for form fields
-  const [formData, setFormData] = useState({
-    plotNo: '',
-    surveyNo: '',
-    plantArea: '',
-    cropType: '',
-    caneVariety: '',
-    waterSrc: '',
-    distance: '',
-  });
+  const dispatch = useDispatch();
 
-  // Handle Input Change
+  // Get cane and plot info data from Redux store
+  const caneAndPlotInfo = useSelector(
+    (state) => state.caneTrip.caneAndPlotInfo
+  );
+
+  // Handle input change and update Redux store
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  // Handle Form Submit
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch('https://api.example.com/cane-plot-info', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        alert('Data saved successfully!');
-      } else {
-        alert('Failed to save data!');
-      }
-    } catch (error) {
-      alert('An error occurred while saving data.');
-    }
+    dispatch(
+      updateField({
+        section: 'caneAndPlotInfo',
+        field: e.target.name,
+        value: e.target.value,
+      })
+    );
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="p-6 bg-white">
       <h2 className="text-lg font-semibold mb-4">Cane and Plot Information</h2>
+
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         {/* Plot No */}
         <div className="flex flex-col">
@@ -48,7 +31,7 @@ const CaneAndPlotInfo = () => {
           <input
             type="text"
             name="plotNo"
-            value={formData.plotNo}
+            value={caneAndPlotInfo.plotNo}
             onChange={handleChange}
             placeholder="Enter Plot No."
             className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -61,7 +44,7 @@ const CaneAndPlotInfo = () => {
           <input
             type="text"
             name="surveyNo"
-            value={formData.surveyNo}
+            value={caneAndPlotInfo.surveyNo}
             onChange={handleChange}
             placeholder="Enter Survey No."
             className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -74,7 +57,7 @@ const CaneAndPlotInfo = () => {
           <input
             type="text"
             name="plantArea"
-            value={formData.plantArea}
+            value={caneAndPlotInfo.plantArea}
             onChange={handleChange}
             placeholder="Enter Plant Area"
             className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -87,7 +70,7 @@ const CaneAndPlotInfo = () => {
           <input
             type="text"
             name="cropType"
-            value={formData.cropType}
+            value={caneAndPlotInfo.cropType}
             onChange={handleChange}
             placeholder="Enter Crop Type"
             className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -100,7 +83,7 @@ const CaneAndPlotInfo = () => {
           <input
             type="text"
             name="caneVariety"
-            value={formData.caneVariety}
+            value={caneAndPlotInfo.caneVariety}
             onChange={handleChange}
             placeholder="Enter Cane Variety"
             className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -113,7 +96,7 @@ const CaneAndPlotInfo = () => {
           <input
             type="text"
             name="waterSrc"
-            value={formData.waterSrc}
+            value={caneAndPlotInfo.waterSrc}
             onChange={handleChange}
             placeholder="Enter Water Src"
             className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -126,7 +109,7 @@ const CaneAndPlotInfo = () => {
           <input
             type="text"
             name="distance"
-            value={formData.distance}
+            value={caneAndPlotInfo.distance}
             onChange={handleChange}
             placeholder="Enter Distance"
             className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -134,7 +117,7 @@ const CaneAndPlotInfo = () => {
         </div>
       </div>
 
-      {/* Submit Button */}
+      {/* Save Button */}
       <div className="flex justify-end items-center p-4">
         <button
           type="submit"
