@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import {
   createRow,
-  saveBilling,
   setPrimary,
   deleteRow,
   saveEdit,
+  saveBilling,
 } from '../../redux/caneSupplierSlice';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
@@ -42,6 +42,7 @@ const Billing = () => {
     dispatch(createRow(newEntry));
     setNewEntry({ accountNo: '', ifsc: '', bankName: '' });
     setShowCreateModal(false);
+    toast.success('Created New Entry');
   };
 
   // Delete an entry by removing it from the local state
@@ -75,19 +76,19 @@ const Billing = () => {
   // Save all billing data (simulate saving via a Redux action)
   const handleSubmit = async () => {
     setLoading(true);
+
     try {
-      // Pass the local data if required by your action
-      await saveBilling(data);
+      const result = await dispatch(saveBilling()).unwrap(); // Wait for completion
+
       toast.success('Billing data saved!');
       navigate('/cane-supplier/');
     } catch (error) {
       console.error(`Failed to save Billing information: ${error}`);
-      toast.error('Failed to save billing data!');
+      toast.error('Failed to save billing data!: ' + error);
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <div className="flex flex-col justify-between bg-white p-6 pt-1 rounded-lg">
       {/* Billing Table */}

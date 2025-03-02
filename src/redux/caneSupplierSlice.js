@@ -223,10 +223,10 @@ export const saveBilling = createAsyncThunk(
     if (!supplierId) {
       return rejectWithValue('Please save personal details first.');
     }
+    const payload = { data: billing.data }; // Ensure correct payload structure
 
     let url = '';
     let method = '';
-    const payload = { ...billing };
 
     if (billingId) {
       // Update existing billing: PUT request
@@ -244,11 +244,13 @@ export const saveBilling = createAsyncThunk(
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
+
       if (!response.ok) {
         const errorMsg = await response.text();
         toast.error(`Billing submission failed: ${errorMsg}`);
         return rejectWithValue(errorMsg);
       }
+
       const data = await response.json();
       toast.success('Billing details saved successfully!');
       return data;
