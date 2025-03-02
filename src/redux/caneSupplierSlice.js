@@ -106,6 +106,8 @@ const initialState = {
       },
     ],
   },
+  editingRow: null,
+  editValues: {},
   supplierId: null, // Set after personal details are saved
   addressId: null, // Set after address is saved
   billingId: null, // Set after billing is saved
