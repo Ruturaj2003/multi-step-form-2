@@ -337,7 +337,9 @@ const caneSupplierSlice = createSlice({
       .addCase(saveBilling.fulfilled, (state, action) => {
         // Set billingId from response, or retain the one already set
         state.billingId =
-          action.payload.id || action.payload.billingId || state.billingId;
+          action.payload.supplierBillingId ||
+          action.payload.billingId ||
+          state.billingId;
       });
   },
 });
