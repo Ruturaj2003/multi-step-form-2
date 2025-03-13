@@ -227,7 +227,7 @@ export const saveBilling = createAsyncThunk(
 
     let url = '';
     let method = '';
-
+    console.log(payload);
     if (billingId) {
       // Update existing billing: PUT request
       url = `${BASE_URL}supplier/${supplierId}/billing/${billingId}`;
