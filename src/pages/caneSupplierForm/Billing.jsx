@@ -29,6 +29,27 @@ const Billing = () => {
   });
   const [editingRow, setEditingRow] = useState(null);
   const [editValues, setEditValues] = useState({});
+  // Validations
+  const validateEntry = (entry) => {
+    const { accountNo, ifsc, bankName } = entry;
+
+    if (!/^\d{8,18}$/.test(accountNo)) {
+      toast.error('Account number must be between 8-18 digits.');
+      return false;
+    }
+
+    if (!/^[A-Z]{4}[0-9A-Z]{7}$/.test(ifsc)) {
+      toast.error('IFSC Code must be 11 characters (start with 4 letters).');
+      return false;
+    }
+
+    if (!/^[A-Za-z\s]+$/.test(bankName) || bankName.trim() === '') {
+      toast.error('Bank Name must contain only letters.');
+      return false;
+    }
+
+    return true;
+  };
 
   // Set a row as primary; only one row can be primary at a time.
   const handlePrimaryChange = (index) => {
@@ -39,6 +60,7 @@ const Billing = () => {
   // Create a new entry by adding it to local state
   const handleCreate = (event) => {
     event.preventDefault(); // Prevent the default form submission behavior
+    if (!validateEntry(newEntry)) return;
     dispatch(createRow(newEntry));
     setNewEntry({ accountNo: '', ifsc: '', bankName: '' });
     setShowCreateModal(false);
@@ -66,6 +88,7 @@ const Billing = () => {
   // Save the edited row by updating the local state
   const handleSaveEdit = (index) => {
     console.log(editValues);
+    if (!validateEntry(editValues)) return;
 
     dispatch(saveEdit({ index, editValues }));
     toast.success('Entry updated!');
